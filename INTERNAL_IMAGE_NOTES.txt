@@ -1,0 +1,7 @@
+TINTOLOGY — INTERNAL IMAGE NOTES (NOT FOR PUBLIC WEBSITE)
+
+Existing Wrap variants retain their previously selected vehicle photographs. The 155 added variants in the expanded catalog currently use manufacturer-referenced colour swatches in the product cards and 3D simulator. Where an exact vehicle photograph for the exact shade is not verified, do not substitute an unrelated car photo or imply that it is an exact match.
+
+For future image enrichment, prefer a vehicle photograph explicitly associated with the exact manufacturer shade/code. If only a close visual reference exists, label it as illustrative. Manufacturer name, series, code and colour swatch remain the authoritative product identification.
+
+Do not add supplier/source names, supplier links, supplier IDs, stock status, or procurement prices to the public website. Manufacturer names and product series remain public because they identify the actual film.
