@@ -17,8 +17,8 @@ const priceNames = [
 ] as const;
 const vehicleNames = ['Купе', 'Лимузина', 'Џип / Караван', 'Комби'];
 
-type ProductPrice = { cfsRegularPrice: number; currency: 'EUR' | 'MKD'; exchangeRate: number; supplierDiscountPct: number; sellingMarkupPct: number; manualSellingPriceMKD: number | null };
-const DEFAULT_PRODUCT_PRICE: ProductPrice = { cfsRegularPrice: 0, currency: 'EUR', exchangeRate: 61.5, supplierDiscountPct: 20, sellingMarkupPct: 10, manualSellingPriceMKD: null };
+type ProductPrice = { cfsRegularPrice: number; currency: 'EUR' | 'MKD'; exchangeRate: number; supplierDiscountPct: number; sellingMarkupPct: number; manualSellingPriceMKD: number | null; cfsRegularPriceRSD?: number; eurRsdRate?: number; rateDate?: string; manualSellingPriceEUR?: number | null };
+const DEFAULT_PRODUCT_PRICE: ProductPrice = { cfsRegularPrice: 0, currency: 'EUR', exchangeRate: 61.5, supplierDiscountPct: 20, sellingMarkupPct: 10, manualSellingPriceMKD: null, cfsRegularPriceRSD: 0, eurRsdRate: 117.6018, rateDate: '2026-11-05', manualSellingPriceEUR: null };
 
 export default function Admin() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -32,12 +32,19 @@ export default function Admin() {
   const [selectedProductId, setSelectedProductId] = useState(PRODUCTS[0]?.id || '');
   const selectedProduct = PRODUCTS.find(p => p.id === selectedProductId);
   const selectedPrice = productPrices[selectedProductId] || DEFAULT_PRODUCT_PRICE;
+  const isWrapProduct = selectedProduct?.category === 'wrap';
   const baseMKD = selectedPrice.cfsRegularPrice * (selectedPrice.currency === 'EUR' ? selectedPrice.exchangeRate : 1);
   const costMKD = baseMKD * (1 - selectedPrice.supplierDiscountPct / 100);
   const suggestedSellingMKD = baseMKD * (1 + selectedPrice.sellingMarkupPct / 100);
   const actualSellingMKD = selectedPrice.manualSellingPriceMKD !== null ? selectedPrice.manualSellingPriceMKD : suggestedSellingMKD;
   const grossProfitMKD = actualSellingMKD - costMKD;
   const grossMarginPct = actualSellingMKD > 0 ? grossProfitMKD / actualSellingMKD * 100 : 0;
+  const baseEUR = (selectedPrice.cfsRegularPriceRSD || 0) / (selectedPrice.eurRsdRate || 117.6018);
+  const suggestedSellingEUR = baseEUR * (1 + selectedPrice.sellingMarkupPct / 100);
+  const actualSellingEUR = selectedPrice.manualSellingPriceEUR !== null && selectedPrice.manualSellingPriceEUR !== undefined ? selectedPrice.manualSellingPriceEUR : suggestedSellingEUR;
+  const grossProfitEUR = actualSellingEUR - baseEUR;
+  const grossMarginEURPct = actualSellingEUR > 0 ? grossProfitEUR / actualSellingEUR * 100 : 0;
+  const formatEUR = (value: number) => `${value.toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 
   async function loadContent() {
     const session = await fetch('/api/admin/session');
@@ -152,23 +159,29 @@ export default function Admin() {
         </section>
         <section className="rounded-2xl border border-blue-900/50 bg-[#101a28] p-5 sm:p-7 mb-6">
           <h2 className="text-lg font-bold mb-1">КАТАЛОГ – набавни и продажни цени</h2>
-          <p className="text-xs text-slate-400 mb-5">Внеси ја редовната CFS цена за производот. Системот пресметува 20% попуст за твојата набавка и продажна цена 10% над редовната CFS цена. Само продажната цена се прикажува на веб-страницата.</p>
+          <p className="text-xs text-slate-400 mb-5">За Wrap внеси проверена набавна цена во RSD/m²; системот ја претвора во EUR според средниот курс на НБС и додава 10% маржа. Другите категории го задржуваат постојниот ценовен модел во МКД.</p>
           <label className="block text-sm font-semibold mb-4">Избери производ
             <select value={selectedProductId} onChange={e => setSelectedProductId(e.target.value)} className="mt-2 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white">
               {PRODUCTS.map(product => <option key={product.id} value={product.id}>{product.brand} · {product.name} {product.code ? `(${product.code})` : ''}</option>)}
             </select>
           </label>
           {selectedProduct && <div className="mb-5 rounded-xl border border-slate-700 bg-[#080f19] p-4"><div className="font-bold text-white">{selectedProduct.name}</div><div className="mt-1 text-xs text-slate-400">{selectedProduct.brand} · {selectedProduct.series} {selectedProduct.code ? `· ${selectedProduct.code}` : ''}</div></div>}
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {isWrapProduct ? <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <label className="text-xs text-slate-400">Набавна цена (RSD / m²)<input type="number" min="0" step="0.01" value={selectedPrice.cfsRegularPriceRSD || ''} onChange={e => updateSelectedProductPrice('cfsRegularPriceRSD', Math.max(0, Number(e.target.value) || 0))} placeholder="Потврдена цена во RSD" className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"/></label>
+            <label className="text-xs text-slate-400">Среден курс НБС (RSD за 1 EUR)<input type="number" min="0.01" step="0.0001" value={selectedPrice.eurRsdRate || 117.6018} onChange={e => updateSelectedProductPrice('eurRsdRate', Math.max(0.01, Number(e.target.value) || 117.6018))} className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"/></label>
+            <label className="text-xs text-slate-400">Датум на курсот<input type="date" value={selectedPrice.rateDate || '2026-11-05'} onChange={e => updateSelectedProductPrice('rateDate', e.target.value)} className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"/></label>
+            <label className="text-xs text-slate-400">Маржа (%)<input type="number" min="0" max="500" step="0.1" value={selectedPrice.sellingMarkupPct} onChange={e => updateSelectedProductPrice('sellingMarkupPct', Math.max(0, Math.min(500, Number(e.target.value) || 0)))} className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"/></label>
+            <label className="text-xs text-slate-400">Рачна продажна цена (EUR / m², опционално)<input type="number" min="0" step="0.01" value={selectedPrice.manualSellingPriceEUR ?? ''} onChange={e => updateSelectedProductPrice('manualSellingPriceEUR', e.target.value === '' ? null : Math.max(0, Number(e.target.value) || 0))} placeholder="Автоматска цена" className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"/></label>
+          </div> : <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <label className="text-xs text-slate-400">CFS редовна цена<input type="number" min="0" step="0.01" value={selectedPrice.cfsRegularPrice || ''} onChange={e => updateSelectedProductPrice('cfsRegularPrice', Math.max(0, Number(e.target.value) || 0))} placeholder="Внеси CFS цена" className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"/></label>
             <label className="text-xs text-slate-400">Валута на CFS<select value={selectedPrice.currency} onChange={e => updateSelectedProductPrice('currency', e.target.value as 'EUR'|'MKD')} className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"><option value="EUR">EUR (€)</option><option value="MKD">MKD (ден.)</option></select></label>
             <label className="text-xs text-slate-400">Курс EUR → MKD<input type="number" min="0.01" step="0.01" value={selectedPrice.exchangeRate} onChange={e => updateSelectedProductPrice('exchangeRate', Math.max(0.01, Number(e.target.value) || 61.5))} className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"/></label>
             <label className="text-xs text-slate-400">Твој попуст (%)<input type="number" min="0" max="100" step="0.1" value={selectedPrice.supplierDiscountPct} onChange={e => updateSelectedProductPrice('supplierDiscountPct', Math.max(0, Math.min(100, Number(e.target.value) || 0)))} className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"/></label>
             <label className="text-xs text-slate-400">Над редовната CFS цена (%)<input type="number" min="0" max="500" step="0.1" value={selectedPrice.sellingMarkupPct} onChange={e => updateSelectedProductPrice('sellingMarkupPct', Math.max(0, Math.min(500, Number(e.target.value) || 0)))} className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"/></label>
             <label className="text-xs text-slate-400">Рачна продажна цена (МКД, опционално)<input type="number" min="0" step="1" value={selectedPrice.manualSellingPriceMKD ?? ''} onChange={e => updateSelectedProductPrice('manualSellingPriceMKD', e.target.value === '' ? null : Math.max(0, Number(e.target.value) || 0))} placeholder="Автоматска цена" className="mt-1 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 text-white"/></label>
-          </div>
+          </div>}
           <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            {[['CFS редовна цена', `${baseMKD.toLocaleString('mk-MK',{maximumFractionDigits:0})} ден.`],['Твоја набавна цена', `${costMKD.toLocaleString('mk-MK',{maximumFractionDigits:0})} ден.`],['Tintology продажна цена', `${actualSellingMKD.toLocaleString('mk-MK',{maximumFractionDigits:0})} ден.`],['Бруто-разлика / маржа', `${grossProfitMKD.toLocaleString('mk-MK',{maximumFractionDigits:0})} ден. · ${grossMarginPct.toFixed(1)}%`]].map(([label,value])=><div key={label} className="rounded-xl border border-slate-700 bg-[#0a111b] p-3"><div className="text-[10px] uppercase tracking-wide text-slate-500">{label}</div><div className="mt-1 text-sm font-bold text-white">{value}</div></div>)}
+            {(isWrapProduct ? [['Набавна цена во EUR', formatEUR(baseEUR)],['Tintology продажна цена', formatEUR(actualSellingEUR)],['Бруто-разлика', formatEUR(grossProfitEUR)],['Бруто-маржа', grossMarginEURPct.toFixed(1) + '%']] : [['CFS редовна цена', `${baseMKD.toLocaleString('mk-MK',{maximumFractionDigits:0})} ден.`],['Твоја набавна цена', `${costMKD.toLocaleString('mk-MK',{maximumFractionDigits:0})} ден.`],['Tintology продажна цена', `${actualSellingMKD.toLocaleString('mk-MK',{maximumFractionDigits:0})} ден.`],['Бруто-разлика / маржа', `${grossProfitMKD.toLocaleString('mk-MK',{maximumFractionDigits:0})} ден. · ${grossMarginPct.toFixed(1)}%`]]).map(([label,value])=><div key={label} className="rounded-xl border border-slate-700 bg-[#0a111b] p-3"><div className="text-[10px] uppercase tracking-wide text-slate-500">{label}</div><div className="mt-1 text-sm font-bold text-white">{value}</div></div>)}
           </div>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><p className="text-xs text-slate-400">Цените се внесуваат по производ; не се преземаат автоматски од CFS и не се измислуваат.</p><button disabled={busy} onClick={saveProductPrices} className="rounded-lg bg-blue-500 px-6 py-3 text-sm font-bold text-black disabled:opacity-50">{busy ? 'Се зачувува...' : 'Зачувај цени на каталогот'}</button></div>
         </section>

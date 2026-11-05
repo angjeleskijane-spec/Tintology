@@ -47,10 +47,19 @@ function validateProductPrices(input: any) {
   for (const [id, raw] of Object.entries(input)) {
     if (!/^[a-z0-9][a-z0-9-]{1,100}$/i.test(id) || !raw || typeof raw !== 'object') return null;
     const p: any = raw;
+    const sellingMarkupPct = Number(p.sellingMarkupPct);
+    if (p.cfsRegularPriceRSD !== undefined) {
+      const cfsRegularPriceRSD = Number(p.cfsRegularPriceRSD);
+      const eurRsdRate = Number(p.eurRsdRate);
+      const manualSellingPriceEUR = p.manualSellingPriceEUR === null || p.manualSellingPriceEUR === '' || p.manualSellingPriceEUR === undefined ? null : Number(p.manualSellingPriceEUR);
+      const rateDate = typeof p.rateDate === 'string' ? p.rateDate.slice(0, 10) : '';
+      if (![cfsRegularPriceRSD, eurRsdRate, sellingMarkupPct].every(Number.isFinite) || cfsRegularPriceRSD < 0 || cfsRegularPriceRSD > 100000000 || eurRsdRate <= 0 || eurRsdRate > 100000 || sellingMarkupPct < 0 || sellingMarkupPct > 500 || (manualSellingPriceEUR !== null && (!Number.isFinite(manualSellingPriceEUR) || manualSellingPriceEUR < 0 || manualSellingPriceEUR > 100000000)) || !/^\d{4}-\d{2}-\d{2}$/.test(rateDate)) return null;
+      output[id] = { cfsRegularPriceRSD, eurRsdRate, rateDate, sellingMarkupPct, manualSellingPriceEUR };
+      continue;
+    }
     const cfsRegularPrice = Number(p.cfsRegularPrice);
     const exchangeRate = Number(p.exchangeRate);
     const supplierDiscountPct = Number(p.supplierDiscountPct);
-    const sellingMarkupPct = Number(p.sellingMarkupPct);
     const manualSellingPriceMKD = p.manualSellingPriceMKD === null || p.manualSellingPriceMKD === '' ? null : Number(p.manualSellingPriceMKD);
     if (![cfsRegularPrice, exchangeRate, supplierDiscountPct, sellingMarkupPct].every(Number.isFinite) || cfsRegularPrice < 0 || cfsRegularPrice > 100000000 || exchangeRate <= 0 || exchangeRate > 100000 || supplierDiscountPct < 0 || supplierDiscountPct > 100 || sellingMarkupPct < 0 || sellingMarkupPct > 500 || (manualSellingPriceMKD !== null && (!Number.isFinite(manualSellingPriceMKD) || manualSellingPriceMKD < 0 || manualSellingPriceMKD > 100000000))) return null;
     if (p.currency !== 'EUR' && p.currency !== 'MKD') return null;
@@ -66,6 +75,18 @@ function publicCatalogPrices(raw: Record<string, any>) {
     const suggested = baseMKD * (1 + Number(p.sellingMarkupPct ?? 10) / 100);
     const selling = p.manualSellingPriceMKD === null || p.manualSellingPriceMKD === undefined ? suggested : Number(p.manualSellingPriceMKD);
     if (Number.isFinite(selling) && selling > 0) result[id] = Math.round(selling);
+  }
+  return result;
+}
+
+function publicWrapCatalogPrices(raw: Record<string, any>) {
+  const result: Record<string, number> = {};
+  for (const [id, p] of Object.entries(raw || {})) {
+    if (!p || Number(p.cfsRegularPriceRSD) <= 0 || Number(p.eurRsdRate) <= 0) continue;
+    const baseEUR = Number(p.cfsRegularPriceRSD) / Number(p.eurRsdRate);
+    const suggested = baseEUR * (1 + Number(p.sellingMarkupPct ?? 10) / 100);
+    const selling = p.manualSellingPriceEUR === null || p.manualSellingPriceEUR === undefined ? suggested : Number(p.manualSellingPriceEUR);
+    if (Number.isFinite(selling) && selling > 0) result[id] = Math.round((selling + Number.EPSILON) * 100) / 100;
   }
   return result;
 }
@@ -161,6 +182,7 @@ app.put('/api/admin/product-prices', async (req, res) => {
   res.json(prices);
 });
 app.get('/api/catalog-prices', async (_req, res) => res.json(publicCatalogPrices(await readProductPrices())));
+app.get('/api/wrap-catalog-prices', async (_req, res) => res.json(publicWrapCatalogPrices(await readProductPrices())));
 
 app.get('/api/site-content', async (_req, res) => res.json(await readContent()));
 
@@ -172,7 +194,7 @@ const SYSTEM_INSTRUCTION = `Ти си Tintology AI — дигитален аси
 - Instagram: https://share.google/EltPox09uP1jm3fEp
 - Facebook: https://share.google/jnaOpcULrSu5pJLOj
 - Локација: Осој, Кичево, Северна Македонија.
-- Сите цени се во македонски денари (МКД). Никогаш не прикажувај цени во евра.
+- Цените за услуги и затемнување стакла се во македонски денари (МКД). Цените во јавниот Wrap каталог се прикажуваат во евра (EUR) по m². Не откривај набавни цени или интерни добавувачи.
 
 Ценовник (користи ги точните износи; не измислувај цени):
 1. Сите стакла, освен предно ветробранско: Standard — Купе 5.500, Лимузина 5.500, Џип/Караван 7.500, Комби 9.500; Nanoceramic Lux — 8.000, 8.000, 11.000, 14.000.

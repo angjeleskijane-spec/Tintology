@@ -37,9 +37,9 @@ import {
   Building2
 } from 'lucide-react';
 
-import workshopImg from './assets/images/tintology_workshop_craft_1793053345865.jpg';
 import tintologyLogo from './assets/images/tintology-owl-metallic.png';
 import priceListImg from './assets/images/tintology-price-list.png';
+import automotiveTintImage from './assets/images/tintology_gallery_suv_1793053360268.jpg';
 import { DEFAULT_SITE_CONTENT, SiteContent } from './siteContent';
 import CarStudio from './CarStudio';
 import ProductCatalog from './ProductCatalog';
@@ -83,83 +83,6 @@ const TINT_LEVELS: TintLevel[] = [
   { vlt: 70, label: '70%', name: 'Nano-Ceramic Clear', privacy: 1, heatRejection: 'Според фолијата', uvProtection: 'Според спецификација', description: 'Речиси проѕирна нијанса за дискретна заштита од сонце.', legalStatus: 'Проверете ги условите за предни стакла' },
 ];
 
-// FAQ items data
-interface FAQItem {
-  id: string;
-  category: 'atest' | 'warranty' | 'care' | 'general';
-  categoryLabel: string;
-  question: string;
-  answer: string;
-  highlights: string[];
-}
-
-const FAQ_DATA: FAQItem[] = [
-  {
-    id: 'atest-process',
-    category: 'atest',
-    categoryLabel: 'А-тест Сертификација',
-    question: 'Како функционира А-тестот во Македонија и дали добивам официјална потврда?',
-    answer: 'Условите за А-тест и потребната документација зависат од конкретната фолија и важечките прописи. Пред монтажа, контактирајте нè за да ги провериме достапниот сертификат и условите за вашето возило. Не ветуваме автоматско одобрување без проверка на документацијата.',
-    highlights: ['Проверка на документација за конкретната фолија', 'Информации за важечките услови и постапки', 'Советување пред монтажа'],
-  },
-  {
-    id: 'atest-limits',
-    category: 'atest',
-    categoryLabel: 'А-тест Сертификација',
-    question: 'Колку проценти е законски дозволено затемнување на предните и задните стакла?',
-    answer: 'Според македонскиот правилник за технички карактеристики на возилата: Дозволеното затемнување зависи од позицијата на стаклото, фабричката пропустливост и важечките прописи. Пред монтажа проверете ги актуелните услови за вашето возило и конкретната фолија. За документација и А-тест, контактирајте нè пред да изберете процент.',
-    highlights: ['Проверка според позицијата на стаклото', 'Проверка на фабричката пропустливост', 'Потврда на важечките прописи пред монтажа'],
-  },
-  {
-    id: 'warranty-coverage',
-    category: 'warranty',
-    categoryLabel: 'Гаранција и Услови',
-    question: 'Какви гаранциски услови важат за фолијата?',
-    answer: 'Гаранцијата зависи од производителот, типот на фолијата и условите на монтажата. Точниот рок и покриените дефекти се наведуваат во гаранциските услови што клиентот ги добива при изборот на производот.',
-    highlights: ['Рокот зависи од производителот', 'Покриените дефекти се наведуваат писмено', 'Условите се потврдуваат пред монтажа'],
-  },
-  {
-    id: 'aftercare-windows',
-    category: 'care',
-    categoryLabel: 'Нега и Одржување',
-    question: 'Колку време по монтажата не смеам да ги спуштам прозорците?',
-    answer: 'Вообичаено се препорачува да не ги спуштате прозорците најмалку 48 часа по монтажата. Точниот период ќе ви го потврди монтажерот според употребената фолија, лепило и температурата. Овој период е клучен за монтажната течност целосно да испари и специјалното чувствително лепило да се врзе монолитно со фабричкото стакло. Во нашиот сервис добивате и предупредувачка лента на копчињата за прозорци како потсетник.',
-    highlights: ['Не ги спуштајте прозорците во препорачаниот период', 'Овозможува совршено врзување на лепилото', 'Посебен безбедносен потсетник на контролите'],
-  },
-  {
-    id: 'aftercare-cleaning',
-    category: 'care',
-    categoryLabel: 'Нега и Одржување',
-    question: 'Како правилно се чистат и одржуваат затемнетите стакла?',
-    answer: 'Затемнетите стакла се исклучително лесни за одржување. Користете чиста мека микрофибер крпа и чиста млака вода или специјални спрејови за стакло што НЕ содржат амонијак. Избегнувајте абразивни сунѓери, груби хартиени крпи или хемикалии со висок алкохолен/амонијачен состав, бидејќи тие можат со текот на годините да го оштетат заштитниот слој против гребнатини.',
-    highlights: ['Чистење со мека микрофибер крпа', 'Никогаш не користете средства со амонијак', 'Отпорно на гребнатини при редовна нега'],
-  },
-  {
-    id: 'aftercare-bubbles',
-    category: 'care',
-    categoryLabel: 'Нега и Одржување',
-    question: 'Забележав ситни водени маглини или точки веднаш по монтажата. Дали е тоа нормално?',
-    answer: 'Да, тоа е целосно природен дел од процесот на сушење! При инсталацијата се користи посебен раствор за лизгање и поставување на фолијата. Микроскопски количини на влага може да останат заробени меѓу фолијата и стаклото, што изгледа како лесна маглина или ситни водени точки. Во рок од 3 до 7 дена (во зависност од сонцето и температурата), влагата природно испарува преку порозната структура на фолијата и стаклото станува совршено кристално чисто.',
-    highlights: ['Целосно природна појава во првите денови', 'Влагата комплетно испарува за 3 до 7 дена', 'Не бара никакво притискање или допирање'],
-  },
-  {
-    id: 'installation-prep',
-    category: 'general',
-    categoryLabel: 'Општи прашања',
-    question: 'Колку време трае монтажата и дали треба однапред да го измијам автомобилот?',
-    answer: 'Монтажата на комплетна задна полусфера трае помеѓу 2 и 3 часа, што значи дека возилото го земате истиот ден. Препорачуваме возилото да биде надворешно измиено пред да дојдете во нашиот сервис во Кичево — ова ни овозможува да работиме во максимално чиста средина и гарантира дека ниту едно зрно прашина нема да навлезе под фолијата.',
-    highlights: ['Проценето време: само 2 до 3 часа', 'Препорачано претходно надворешно перење', 'Се работи во изолирана соба со прочистен воздух'],
-  },
-  {
-    id: 'defroster-signals',
-    category: 'general',
-    categoryLabel: 'Општи прашања',
-    question: 'Дали фолијата може да ги оштети грејачите на задното стакло или да го попречи мобилниот/GPS сигнал?',
-    answer: 'Правилно поставување е важно за да се избегне оштетување на грејачите. Неметалните керамички фолии вообичаено не влијаат на GPS и мобилниот сигнал, но техничките својства зависат од конкретниот производ. Прашајте нè за спецификацијата на фолијата што ја избирате.',
-    highlights: ['Безбедно за задните електрични грејачи', 'Неметална структура кај соодветните керамички фолии', 'Проверка на техничките карактеристики на фолијата'],
-  },
-];
-
 interface ChatMessage {
   role: 'user' | 'model';
   text: string;
@@ -187,11 +110,6 @@ export default function App() {
     return `rgba(3, 10, 20, ${glassTintOpacity})`;
   };
 
-  // FAQ State
-  const [activeFaqCategory, setActiveFaqCategory] = useState<string>('all');
-  const [expandedFaqId, setExpandedFaqId] = useState<string>('atest-process');
-  const [faqSearchQuery, setFaqSearchQuery] = useState<string>('');
-
   // Gemini Chatbot State
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
@@ -211,10 +129,10 @@ export default function App() {
   const [language, setLanguage] = useState<'mk' | 'sq' | 'en'>('mk');
   const tr = (mk: string, sq: string, en: string) => language === 'sq' ? sq : language === 'en' ? en : mk;
   const serviceMenuItems = [
-    { title: tr('Затемнување автомобилски стакла', 'Errësim i xhamave të automjetit', 'Automotive window tinting'), href: '/zatemnuvanje-stakla', image: 'https://images.pexels.com/photos/31154212/pexels-photo-31154212.jpeg?cs=srgb&dl=pexels-bulat843-prayfor843-tg-1243575272-31154212.jpg&fm=jpg', alt: 'Монтажа на фолија за затемнување автомобилски стакла', description: tr('Професионално затемнување со избор на нијанси и заштита од сонце.', 'Errësim profesional me nuanca të ndryshme dhe mbrojtje nga dielli.', 'Professional window tinting with shade options and solar protection.') },
+    { title: tr('Затемнување автомобилски стакла', 'Errësim i xhamave të automjetit', 'Automotive window tinting'), href: '/zatemnuvanje-stakla', image: automotiveTintImage, alt: 'Монтажа на фолија за затемнување автомобилски стакла', description: tr('Професионално затемнување со избор на нијанси и заштита од сонце.', 'Errësim profesional me nuanca të ndryshme dhe mbrojtje nga dielli.', 'Professional window tinting with shade options and solar protection.') },
     { title: tr('Замена на шофершајбна', 'Zëvendësim i xhamit të përparmë', 'Windshield replacement'), href: '/zamena-avtostakla', image: 'https://images.pexels.com/photos/11950154/pexels-photo-11950154.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950154.jpg&fm=jpg', alt: 'Работа со лепило при монтажа на автомобилско ветробранско стакло', description: tr('Замена на оштетено ветробранско стакло со правилна монтажа.', 'Zëvendësim i xhamit të dëmtuar me montim profesional.', 'Replacement of damaged windshields with professional installation.') },
     { title: tr('Фолии за домови и објекти', 'Filma për shtëpi dhe objekte', 'Films for homes and buildings'), href: '/folii-za-domovi-i-objekti', image: 'https://images.pexels.com/photos/27985107/pexels-photo-27985107.jpeg?cs=srgb&dl=pexels-jan-van-der-wolf-11680885-27985107.jpg&fm=jpg', alt: 'Модерна стаклена фасада на објект', description: tr('Сончева, топлинска и декоративна заштита за домови и деловни објекти.', 'Mbrojtje nga dielli, nxehtësia dhe dekorim për shtëpi e objekte.', 'Solar, heat and decorative films for homes and commercial buildings.') },
-    { title: tr('Репарација на шофершајбна', 'Riparim i xhamit të përparmë', 'Windshield repair'), href: '/reparacija-avtostakla', image: 'https://images.pexels.com/photos/11950156/pexels-photo-11950156.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950156.jpg&fm=jpg', alt: 'Техничар врши поправка на автомобилско ветробранско стакло', description: tr('Репарација на оштетувања и мали пукнатини на ветробранско стакло.', 'Riparim i dëmtimeve dhe çarjeve të vogla në xhamin e përparmë.', 'Repair of chips and small cracks in windshields.') },
+    { title: tr('Репарација на шофершајбна', 'Riparim i xhamit të përparmë', 'Windshield repair'), href: '/reparacija-avtostakla', image: 'https://images.pexels.com/photos/11950155/pexels-photo-11950155.jpeg?auto=compress&cs=tinysrgb&w=1600', alt: 'Техничар врши поправка на автомобилско ветробранско стакло', description: tr('Репарација на оштетувања и мали пукнатини на ветробранско стакло.', 'Riparim i dëmtimeve dhe çarjeve të vogla në xhamin e përparmë.', 'Repair of chips and small cracks in windshields.') },
     { title: 'PPF · ' + tr('Заштита на бојата', 'Mbrojtje e bojës', 'Paint protection'), href: '/ppf-zastita', image: 'https://images.pexels.com/photos/36021355/pexels-photo-36021355.jpeg?cs=srgb&dl=pexels-tejas-jr-528833302-36021355.jpg&fm=jpg', alt: 'Монтажа на PPF заштитна фолија на автомобил', description: tr('Транспарентна заштита на лакот од гребнатини и секојдневно оштетување.', 'Mbrojtje transparente e bojës nga gërvishtjet dhe dëmtimet e përditshme.', 'Transparent paint protection against scratches and everyday damage.') },
     { title: 'Car Wrap · ' + tr('Промена на боја', 'Ndryshim i ngjyrës', 'Colour change'), href: '/wrap', image: 'https://images.pexels.com/photos/10162528/pexels-photo-10162528.jpeg?cs=srgb&dl=pexels-autorecords-10162528.jpg&fm=jpg', alt: 'Монтажа на винил фолија за промена на боја на автомобил', description: tr('Целосна и делумна промена на боја со винилни фолии.', 'Ndryshim i plotë ose i pjesshëm i ngjyrës me filma vinili.', 'Full or partial colour changes using premium vinyl films.') },
   ];
@@ -348,17 +266,6 @@ export default function App() {
     }
   };
 
-  // Filter FAQ items
-  const filteredFaqs = FAQ_DATA.filter((item) => {
-    const matchesCategory = activeFaqCategory === 'all' || item.category === activeFaqCategory;
-    const matchesSearch =
-      faqSearchQuery === '' ||
-      item.question.toLowerCase().includes(faqSearchQuery.toLowerCase()) ||
-      item.answer.toLowerCase().includes(faqSearchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
-
-
   return (
     <div className="min-h-screen bg-[#09090b] text-slate-100 selection:bg-blue-500 selection:text-black">
       {/* ──────────────────────────────────────────────────────────── */}
@@ -391,12 +298,6 @@ export default function App() {
             </button>
             <a href="#simulator" className="hover:text-blue-400 transition-colors whitespace-nowrap">
               {tr('Симулатор', 'Simulatori', 'Simulator')}
-            </a>
-            <a href="#why-us" className="hover:text-blue-400 transition-colors whitespace-nowrap">
-              {tr('Зошто нас', 'Pse ne', 'Why us')}
-            </a>
-            <a href="#faq" className="hover:text-blue-400 transition-colors whitespace-nowrap">
-              FAQ
             </a>
           </nav>
 
@@ -460,21 +361,6 @@ export default function App() {
                 className="py-1 hover:text-blue-400 transition-colors"
               >
                 Симулатор на затемнување
-              </a>
-              <a
-                href="#why-us"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1 hover:text-blue-400 transition-colors"
-              >
-                {tr('Зошто Tintology', 'Pse Tintology', 'Why Tintology')}
-              </a>
-              <a
-                href="#faq"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1 hover:text-blue-400 transition-colors flex items-center justify-between"
-              >
-                <span>{tr('Често поставувани прашања', 'Pyetje të shpeshta', 'Frequently asked questions')}</span>
-                <span className="text-xs text-blue-400 bg-blue-950/60 px-2 py-0.5 rounded">FAQ</span>
               </a>
             </div>
             <div className="pt-3 border-t border-[#1e1e28] flex flex-col gap-2.5">
@@ -628,276 +514,6 @@ export default function App() {
         </section>
       ))}
 
-      {/* 6. WHY CHOOSE TINTOLOGY (ЗОШТО TINTOLOGY)                    */}
-      {/* ──────────────────────────────────────────────────────────── */}
-      <section id="why-us" className="py-20 bg-[#09090b]">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left: Workshop image showcase */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative rounded-2xl overflow-hidden border border-[#28283a] bg-[#111119] shadow-2xl">
-                <img
-                  src={workshopImg}
-                  alt="Прецизна монтажа на фолија во Tintology Кичево"
-                  className="w-full h-[400px] lg:h-[480px] object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-transparent opacity-70" />
-                <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-[#0d0d14]/90 backdrop-blur-md border border-[#242436]">
-                  <div className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">
-                    Специјализирана Работилница
-                  </div>
-                  <div className="text-sm font-semibold text-white">
-                    Чиста средина со специјално насочено LED осветлување за нула прашина.
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: 4 Value Pillars */}
-            <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-400 mb-2">
-                <Award className="h-4 w-4" />
-                <span>Зошто да не изберете нас</span>
-              </div>
-              <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-8">
-                Прецизност без компромиси за вашето возило
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="p-6 rounded-xl bg-[#12121a] border border-[#232332] hover:border-slate-600 transition-all">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-950/70 border border-blue-800/40 text-blue-400 mb-4 font-bold">
-                    01
-                  </div>
-                  <h4 className="font-display text-base font-bold text-white mb-2">
-                    Премиум Материјали
-                  </h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Користиме производи според избраниот пакет; спецификацијата и гаранциските услови се проверуваат пред монтажа.
-                  </p>
-                </div>
-
-                <div className="p-6 rounded-xl bg-[#12121a] border border-[#232332] hover:border-slate-600 transition-all">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-950/70 border border-blue-800/40 text-blue-400 mb-4 font-bold">
-                    02
-                  </div>
-                  <h4 className="font-display text-base font-bold text-white mb-2">
-                    Прецизна Монтажа
-                  </h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Внимателна подготовка и поставување со цел да се зачуваат стаклото, ентериерните панели и грејачите.
-                  </p>
-                </div>
-
-                <div className="p-6 rounded-xl bg-[#12121a] border border-[#232332] hover:border-slate-600 transition-all">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-950/70 border border-blue-800/40 text-blue-400 mb-4 font-bold">
-                    03
-                  </div>
-                  <h4 className="font-display text-base font-bold text-white mb-2">
-                    Јасни гаранциски услови
-                  </h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Рокот и покриените дефекти се наведуваат според условите на производителот и избраната фолија.
-                  </p>
-                </div>
-
-                <div className="p-6 rounded-xl bg-[#12121a] border border-[#232332] hover:border-slate-600 transition-all">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-950/70 border border-blue-800/40 text-blue-400 mb-4 font-bold">
-                    04
-                  </div>
-                  <h4 className="font-display text-base font-bold text-white mb-2">
-                    Брза и Чиста Изведба
-                  </h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Времетраењето зависи од возилото и избраната услуга; за затемнување на целосен пакет најчесто се планираат околу 2 до 3 часа.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ──────────────────────────────────────────────────────────── */}
-      {/* 7. FAQ SECTION (ЧЕСТО ПОСТАВУВАНИ ПРАШАЊА)                   */}
-      {/* ──────────────────────────────────────────────────────────── */}
-      <section id="faq" className="py-20 bg-[#0c0c12] border-t border-[#1c1c28]">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-400 mb-2">
-                <HelpCircle className="h-4 w-4" />
-                <span>Информации & Одговори</span>
-              </div>
-              <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                {tr('Често поставувани прашања', 'Pyetje të shpeshta', 'Frequently asked questions')}
-              </h2>
-              <p className="mt-3 text-base text-slate-300">
-                Корисни информации за документацијата, гаранциските услови и правилното одржување на затемнетите стакла.
-              </p>
-            </div>
-
-            <div className="relative w-full md:w-72">
-              <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
-              <input
-                type="text"
-                value={faqSearchQuery}
-                onChange={(e) => setFaqSearchQuery(e.target.value)}
-                placeholder="Пребарај прашање..."
-                className="w-full pl-10 pr-4 py-2 rounded-xl bg-[#14141f] border border-[#272738] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-400"
-              />
-            </div>
-          </div>
-
-          {/* Category Tabs */}
-          <div className="flex flex-wrap items-center gap-2 mb-8">
-            <button
-              onClick={() => setActiveFaqCategory('all')}
-              className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                activeFaqCategory === 'all'
-                  ? 'bg-blue-400 text-black shadow-md shadow-blue-400/20'
-                  : 'bg-[#151520] text-slate-400 hover:text-white border border-[#242436]'
-              }`}
-            >
-              Сите прашања ({FAQ_DATA.length})
-            </button>
-            <button
-              onClick={() => setActiveFaqCategory('atest')}
-              className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                activeFaqCategory === 'atest'
-                  ? 'bg-blue-400 text-black shadow-md shadow-blue-400/20'
-                  : 'bg-[#151520] text-slate-400 hover:text-white border border-[#242436]'
-              }`}
-            >
-              А-тест Сертификација
-            </button>
-            <button
-              onClick={() => setActiveFaqCategory('warranty')}
-              className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                activeFaqCategory === 'warranty'
-                  ? 'bg-blue-400 text-black shadow-md shadow-blue-400/20'
-                  : 'bg-[#151520] text-slate-400 hover:text-white border border-[#242436]'
-              }`}
-            >
-              Гаранција и Услови
-            </button>
-            <button
-              onClick={() => setActiveFaqCategory('care')}
-              className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                activeFaqCategory === 'care'
-                  ? 'bg-blue-400 text-black shadow-md shadow-blue-400/20'
-                  : 'bg-[#151520] text-slate-400 hover:text-white border border-[#242436]'
-              }`}
-            >
-              Нега и Одржување
-            </button>
-            <button
-              onClick={() => setActiveFaqCategory('general')}
-              className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                activeFaqCategory === 'general'
-                  ? 'bg-blue-400 text-black shadow-md shadow-blue-400/20'
-                  : 'bg-[#151520] text-slate-400 hover:text-white border border-[#242436]'
-              }`}
-            >
-              Монтажа и Сигнали
-            </button>
-          </div>
-
-          {/* Accordion Questions List */}
-          <div className="space-y-4">
-            {filteredFaqs.length === 0 ? (
-              <div className="p-8 text-center rounded-xl bg-[#12121a] border border-[#232332] text-slate-400 text-sm">
-                Не се пронајдени прашања за пребарувањето "{faqSearchQuery}". Обидете се со друг термин или прашајте го нашиот AI асистент подолу!
-              </div>
-            ) : (
-              filteredFaqs.map((faq) => {
-                const isExpanded = expandedFaqId === faq.id;
-                return (
-                  <div
-                    key={faq.id}
-                    className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
-                      isExpanded
-                        ? 'bg-[#13131c] border-blue-500/50 shadow-lg shadow-blue-950/30'
-                        : 'bg-[#101017] border-[#222232] hover:border-slate-600'
-                    }`}
-                  >
-                    <button
-                      onClick={() => setExpandedFaqId(isExpanded ? '' : faq.id)}
-                      className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer"
-                    >
-                      <div className="flex flex-col items-start pr-4">
-                        <span className="text-[11px] font-semibold text-blue-400 uppercase tracking-wider mb-1">
-                          {faq.categoryLabel}
-                        </span>
-                        <span className="font-display text-base sm:text-lg font-bold text-white leading-snug">
-                          {faq.question}
-                        </span>
-                      </div>
-                      <div
-                        className={`shrink-0 flex h-8 w-8 items-center justify-center rounded-full border transition-transform duration-200 ${
-                          isExpanded
-                            ? 'bg-blue-400 text-black border-blue-400 rotate-180'
-                            : 'bg-[#171724] text-slate-400 border-[#2b2b3d]'
-                        }`}
-                      >
-                        <ChevronDown className="h-4 w-4" />
-                      </div>
-                    </button>
-
-                    {isExpanded && (
-                      <div className="px-6 pb-6 pt-1 text-sm text-slate-300 border-t border-[#1e1e2d] animate-fadeIn">
-                        <p className="leading-relaxed mb-4">{faq.answer}</p>
-                        <div className="flex flex-wrap gap-2 pt-2 border-t border-[#1a1a27]">
-                          {faq.highlights.map((h, i) => (
-                            <span
-                              key={i}
-                              className="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-[#171724] px-3 py-1 rounded-md border border-[#262638]"
-                            >
-                              <CheckCircle2 className="h-3.5 w-3.5 text-blue-400" />
-                              <span>{h}</span>
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* ──────────────────────────────────────────────────────────── */}
-      {/* 8. CLIENT EXPERIENCES */}
-      <section id="testimonials" className="py-20 bg-[#09090b] border-t border-[#1c1c28]">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-400 mb-2">
-              <ThumbsUp className="h-4 w-4" />
-              <span>{tr('Искуства на клиенти', 'Përvojat e klientëve', 'Customer reviews')}</span>
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Вашето мислење ни значи
-            </h2>
-            <p className="mt-3 text-base text-slate-300">
-              Овој дел ќе ги прикажува вистинските искуства на клиентите на Tintology. Не објавуваме измислени оценки или рецензии.
-            </p>
-            <div className="mt-8 rounded-2xl bg-[#12121b] border border-[#242436] p-8">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-950/70 border border-blue-800/40 text-blue-400 mb-4">
-                <Quote className="h-7 w-7" />
-              </div>
-              <h3 className="font-display text-xl font-bold text-white mb-2">Бевте наш клиент?</h3>
-              <p className="text-sm text-slate-400 max-w-xl mx-auto mb-6">
-                Споделете го вашето искуство со нас. Вашата рецензија ќе ни помогне на идните клиенти да донесат подобра одлука.
-              </p>
-              <a href="https://share.google/EltPox09uP1jm3fEp" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center rounded-xl bg-blue-500 hover:bg-blue-400 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 transition-colors">
-                Посетете нè на Instagram
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* 9. CONTACT, LOCATION & INQUIRY FORM                          */}
       {/* ──────────────────────────────────────────────────────────── */}
       <section id="contact" className="py-20 bg-[#0c0c12] border-t border-[#1c1c28]">
@@ -905,19 +521,16 @@ export default function App() {
           <div className="max-w-3xl mb-12">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-400 mb-2">
               <MapPin className="h-4 w-4" />
-              <span>Локација & Директен Контакт</span>
+              <span>Брзо барање за термин и процена</span>
             </div>
             <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Посетете не во Кичево или испратете прашање
+              Посетете нè во Кичево или испратете прашање
             </h2>
-            <p className="mt-3 text-base text-slate-300">
-              Нашиот тим е секогаш подготвен за брза консултација, совет за процентот на фолија и прецизна понуда.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left: Contact Info & Opening Hours Cards */}
-            <div className="lg:col-span-5 space-y-6">
+          <div className="flex justify-center">
+            {/* Contact details retained as requested */}
+            <div className="w-full max-w-2xl space-y-6">
               <div className="p-6 rounded-2xl bg-[#12121c] border border-[#252538]">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-400 text-black">
@@ -1011,93 +624,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Right: Quick Inquiry / Appointment Form */}
-            <div className="lg:col-span-7 rounded-2xl bg-[#12121c] border border-[#252538] p-8">
-              <h3 className="font-display text-xl font-bold text-white mb-2">
-                Брзо барање за термин и процена
-              </h3>
-              <p className="text-xs text-slate-400 mb-6">
-                Пополнете ги податоците. Ќе се отвори WhatsApp со подготвена порака што треба да ја испратите.
-              </p>
-
-              {inlineSubmitted ? (
-                <div className="p-8 text-center rounded-xl bg-blue-950/40 border border-blue-500/40">
-                  <CheckCircle2 className="h-12 w-12 text-blue-400 mx-auto mb-3" />
-                  <h4 className="font-display text-lg font-bold text-white mb-1">
-                    Пораката е подготвена во WhatsApp
-                  </h4>
-                  <p className="text-xs text-slate-300 max-w-md mx-auto">
-                    WhatsApp треба да се отвори со пополнета порака. Притиснете Испрати во WhatsApp за да ни го испратите барањето.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleInlineSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                        Вашето име и презиме:
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={inlineContact.name}
-                        onChange={(e) => setInlineContact({ ...inlineContact, name: e.target.value })}
-                        placeholder="пр. Александар Стојаноски"
-                        className="w-full px-4 py-3 rounded-xl bg-[#0a0a0f] border border-[#262638] text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-400 transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                        Телефон за контакт:
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={inlineContact.phone}
-                        onChange={(e) => setInlineContact({ ...inlineContact, phone: e.target.value })}
-                        placeholder="пр. 079 315 600"
-                        className="w-full px-4 py-3 rounded-xl bg-[#0a0a0f] border border-[#262638] text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-400 transition-colors"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                      Марка, модел и година на возилото:
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={inlineContact.model}
-                      onChange={(e) => setInlineContact({ ...inlineContact, model: e.target.value })}
-                      placeholder="пр. VW Golf 7 (2018), BMW 320d (2020)"
-                      className="w-full px-4 py-3 rounded-xl bg-[#0a0a0f] border border-[#262638] text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-400 transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                      Која услуга ве интересира / Дополнителна порака:
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={inlineContact.message}
-                      onChange={(e) => setInlineContact({ ...inlineContact, message: e.target.value })}
-                      placeholder="пр. Сакам затемнување на задна полусфера со 20% фолија, кога имате слободен термин оваа недела?"
-                      className="w-full px-4 py-3 rounded-xl bg-[#0a0a0f] border border-[#262638] text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-400 transition-colors resize-none"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold uppercase tracking-wider text-xs text-black bg-gradient-to-r from-blue-400 to-blue-300 hover:from-blue-300 hover:to-blue-400 shadow-lg shadow-blue-500/20 active:scale-98 transition-all cursor-pointer"
-                  >
-                    <Send className="h-4 w-4" />
-                    <span>Испрати барање за термин</span>
-                  </button>
-                </form>
-              )}
-            </div>
           </div>
         </div>
       </section>
@@ -1127,15 +653,6 @@ export default function App() {
               </a>
               <a href="#product-catalog" className="hover:text-blue-400 transition-colors">
                 Каталог
-              </a>
-              <a href="#why-us" className="hover:text-blue-400 transition-colors">
-                {tr('Зошто Tintology', 'Pse Tintology', 'Why Tintology')}
-              </a>
-              <a href="#faq" className="hover:text-blue-400 transition-colors">
-                Чести Прашања
-              </a>
-              <a href="#testimonials" className="hover:text-blue-400 transition-colors">
-                {tr('Искуства на клиенти', 'Përvojat e klientëve', 'Customer reviews')}
               </a>
               <a href="#contact" className="hover:text-blue-400 transition-colors">
                 Локација Кичево

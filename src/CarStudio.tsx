@@ -30,14 +30,12 @@ const ARCHIVED_CAR_MODELS: CarModel[] = [
   { id: 'mercedes-g63-2025', brand: 'Mercedes-Benz', model: 'G-Class AMG G 63 (2025)', category: 'suv', uid: 'f583b5bfc17346c08573dc4f1edebefe', author: 'Ddiaz Design', license: 'CC BY-NC (verify)', source: 'https://sketchfab.com/3d-models/2025-mercedes-benz-g-class-amg-g-63-f583b5bfc17346c08573dc4f1edebefe' },
   { id: 'vw-golf-gti-mk2', brand: 'Volkswagen', model: 'Golf GTI MK2 (1992)', category: 'hatchback', uid: '1fb8f26b105445fbaa98ca2577f7067e', author: 'Ddiaz Design', license: 'CC BY-NC-SA (verify)', source: 'https://sketchfab.com/3d-models/1992-volkswagen-golf-gti-mk2-1fb8f26b105445fbaa98ca2577f7067e' },
   { id: 'vw-passat-pro-2025', brand: 'Volkswagen', model: 'Passat Pro 380TSI (2025)', category: 'sedan', uid: '92115be13e984f42926e67057e969fd7', author: 'Ddiaz Design', license: 'Verify original Sketchfab license', source: 'https://sketchfab.com/search?q=2025%20Volkswagen%20Passat%20Pro%20380TSI%202.0T&type=models' },
+  { id: 'fiat-tipo-2021', brand: 'Fiat', model: 'Tipo 5-Door (2021)', category: 'hatchback', uid: '8511790219664c84807777c53c82c9e0', author: 'Sketchfab creator', license: 'Verify on Sketchfab', source: 'https://sketchfab.com/3d-models/fiat-tipo-5door-2021-8511790219664c84807777c53c82c9e0' },
 
   // Ten new Sketchfab candidates requested by the user. Add first; calibrate and filter only after testing.
-  { id: 'fiat-500f-1965', brand: 'Fiat', model: '500F (1965)', category: 'hatchback', uid: '91c9a625d0c24026b266fbe68352e6fa', author: 'Sketchfab creator', license: 'Verify on Sketchfab', source: 'https://sketchfab.com/3d-models/1965-fiat-500f-91c9a625d0c24026b266fbe68352e6fa' },
-  { id: 'fiat-tipo-2021', brand: 'Fiat', model: 'Tipo 5-Door (2021)', category: 'hatchback', uid: '8511790219664c84807777c53c82c9e0', author: 'Sketchfab creator', license: 'Verify on Sketchfab', source: 'https://sketchfab.com/3d-models/fiat-tipo-5door-2021-8511790219664c84807777c53c82c9e0' },
   { id: 'citroen-c3-2020', brand: 'Citroën', model: 'C3 (2020)', category: 'hatchback', uid: 'c3caaa231ed34ad9bb9367a5cf760097', author: 'Sketchfab creator', license: 'Verify on Sketchfab', source: 'https://sketchfab.com/3d-models/citroen-c3-2020-c3caaa231ed34ad9bb9367a5cf760097' },
   { id: 'opel-corsa-gsi-2019', brand: 'Opel', model: 'Corsa GSi (2019)', category: 'hatchback', uid: 'fdadf75ad03c42d0b7e81dd056869228', author: 'Sketchfab creator', license: 'Verify on Sketchfab', source: 'https://sketchfab.com/3d-models/opel-corsa-gsi-2019-fdadf75ad03c42d0b7e81dd056869228' },
   { id: 'opel-insignia-2020', brand: 'Opel', model: 'Insignia Grand Sport (2020)', category: 'sedan', uid: '03daad120187448998ae2bd5fd964237', author: 'Sketchfab creator', license: 'Verify on Sketchfab', source: 'https://sketchfab.com/3d-models/opel-insignia-grand-sport-2020-03daad120187448998ae2bd5fd964237' },
-  { id: 'opel-astra', brand: 'Opel', model: 'Astra', category: 'hatchback', uid: 'b78d6a098dc345fc9b5293552e4cc642', author: 'Sketchfab creator', license: 'Verify on Sketchfab', source: 'https://sketchfab.com/3d-models/opel-astra-b78d6a098dc345fc9b5293552e4cc642' },
   { id: 'opel-grandland-x-2019', brand: 'Opel', model: 'Grandland X (2019)', category: 'suv', uid: '88da47dec6b04feaa89b24384d6ce9b0', author: 'Sketchfab creator', license: 'Verify on Sketchfab', source: 'https://sketchfab.com/3d-models/opel-grandland-x-2019-88da47dec6b04feaa89b24384d6ce9b0' },
   { id: 'audi-s3-2007', brand: 'Audi', model: 'S3 (2007)', category: 'hatchback', uid: '6cfe7fdcb8ea43699ee11049057706ea', author: 'Sketchfab creator', license: 'Verify on Sketchfab', source: 'https://sketchfab.com/3d-models/2007-audi-s3-6cfe7fdcb8ea43699ee11049057706ea' },
 ];
@@ -45,11 +43,9 @@ const ARCHIVED_CAR_MODELS: CarModel[] = [
 // Mustang Improved remains first and untouched. Every other candidate is individually calibrated after live material inspection.
 const APPROVED_CAR_MODEL_ORDER = [
   'ford-mustang', 'nissan-gtr', 'audi-a4', 'porsche-911-930', 'lamborghini-huracan',
-  'audi-rs6-avant',
-  'mercedes-g63-2025', 'vw-golf-gti-mk2', 'vw-passat-pro-2025',
-  'fiat-500f-1965', 'fiat-tipo-2021', 'citroen-c3-2020',
-  'opel-corsa-gsi-2019', 'opel-insignia-2020', 'opel-astra', 'opel-grandland-x-2019',
-  'audi-s3-2007',
+  'audi-rs6-avant', 'mercedes-g63-2025', 'vw-golf-gti-mk2', 'vw-passat-pro-2025',
+  'fiat-tipo-2021', 'citroen-c3-2020',
+  'opel-corsa-gsi-2019', 'opel-insignia-2020', 'opel-grandland-x-2019', 'audi-s3-2007',
 ];
 
 const CAR_MODELS: CarModel[] = APPROVED_CAR_MODEL_ORDER.flatMap((id) =>
@@ -165,16 +161,16 @@ function setMaterialTint(original: SketchfabMaterial, color: string, options: { 
   }
   return material;
 }
-function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt' | 'xr88' | 'chameleon' = 'vlt', options: { applyOpacity?: boolean; blendOverride?: number; calibration?: 'audi-a4' | 'nissan-gtr' } = {}) {
+function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt' | 'xr88' | 'chameleon' = 'vlt', options: { applyOpacity?: boolean; blendOverride?: number; calibration?: 'audi-a4' | 'nissan-gtr' | 'mercedes-g63' | 'vw-golf-gti-mk2' | 'audi-rs6-avant' | 'vw-passat-pro-2025' } = {}) {
   // Simulator darkness scale (not physical VLT). The approved user-facing
   // stops are intentionally nonlinear so each step is visibly darker.
   // The five customer-facing tint stops run from light (30% total tint) to darkest (95%).
-  const standardStops: Record<number, { color: string; opacity: number }> = {
-    30: { color: '#929DA7', opacity: 0.28 },
-    50: { color: '#59636D', opacity: 0.40 },
-    65: { color: '#343E48', opacity: 0.50 },
-    85: { color: '#070B10', opacity: 0.82 },
-    95: { color: '#000000', opacity: 0.92 },
+  const standardStops: Record<number, { color: string; opacity: number; blend: number }> = {
+    30: { color: '#929DA7', opacity: 0.28, blend: 0.18 },
+    50: { color: '#59636D', opacity: 0.40, blend: 0.30 },
+    65: { color: '#343E48', opacity: 0.50, blend: 0.40 },
+    85: { color: '#070B10', opacity: 0.82, blend: 0.68 },
+    95: { color: '#000000', opacity: 0.92, blend: 0.78 },
   };
   // Audi A4 (B5): retain its proven calibrated appearance while mapping it to the new five stops.
   const audiStops: Record<number, { color: string; opacity: number; blend: number }> = {
@@ -193,11 +189,42 @@ function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt'
     85: { color: '#05080C', opacity: 0.82, blend: 0.96 },
     95: { color: '#000000', opacity: 0.94, blend: 0.97 },
   };
+  // Mercedes-Benz G-Class: its former 95% appearance is the new 65% reference.
+  // The former 65/85/95 visual stops are shifted to 30/50/65; 85/95 extend darker.
+  const mercedesG63Stops: Record<number, { color: string; opacity: number; blend: number }> = {
+    30: { color: '#343E48', opacity: 0.50, blend: 0.40 },
+    50: { color: '#070B10', opacity: 0.82, blend: 0.68 },
+    65: { color: '#000000', opacity: 0.92, blend: 0.78 },
+    85: { color: '#000000', opacity: 0.96, blend: 0.88 },
+    95: { color: '#000000', opacity: 0.99, blend: 0.94 },
+  };
+  // Vehicle-specific anchor curves. For Golf GTI and RS6, the former
+  // 95% appearance is now the 65% reference; for Passat it is the 85% reference.
+  // Lighter stops reuse the corresponding former lighter appearances, while
+  // the final 95% stop extends darker than the new reference.
+  const sixtyFiveAnchorStops: Record<number, { color: string; opacity: number; blend: number }> = {
+    30: { color: '#343E48', opacity: 0.50, blend: 0.40 },
+    50: { color: '#070B10', opacity: 0.82, blend: 0.68 },
+    65: { color: '#000000', opacity: 0.92, blend: 0.78 },
+    85: { color: '#000000', opacity: 0.96, blend: 0.88 },
+    95: { color: '#000000', opacity: 0.99, blend: 0.94 },
+  };
+  const eightyFiveAnchorStops: Record<number, { color: string; opacity: number; blend: number }> = {
+    30: { color: '#929DA7', opacity: 0.28, blend: 0.18 },
+    50: { color: '#59636D', opacity: 0.40, blend: 0.30 },
+    65: { color: '#070B10', opacity: 0.82, blend: 0.68 },
+    85: { color: '#000000', opacity: 0.92, blend: 0.78 },
+    95: { color: '#000000', opacity: 0.98, blend: 0.94 },
+  };
   // Nissan GT-R R35 experiment: use the proven Audi A4 visual calibration
   // as the reference instead of the previous Nissan-specific cloudy/glassy
   // values. The Nissan model keeps its own geometry and texture maps; only
   // the tint response and PBR surface tuning are matched to the Audi preset.
-  const stops = options.calibration === 'nissan-gtr' ? nissanStops : options.calibration === 'audi-a4' ? audiStops : standardStops;
+  const stops = options.calibration === 'mercedes-g63' || options.calibration === 'vw-golf-gti-mk2' || options.calibration === 'audi-rs6-avant'
+    ? (options.calibration === 'mercedes-g63' ? mercedesG63Stops : sixtyFiveAnchorStops)
+    : options.calibration === 'vw-passat-pro-2025' ? eightyFiveAnchorStops
+    : options.calibration === 'nissan-gtr' ? nissanStops
+    : options.calibration === 'audi-a4' ? audiStops : standardStops;
   const levels = Object.keys(stops).map(Number).sort((a, b) => a - b);
   const value = Math.max(30, Math.min(95, darkness));
   let lower = levels[0], upper = levels[levels.length - 1];
@@ -215,7 +242,7 @@ function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt'
   const calibratedBlend = mix(stops[lower].blend, stops[upper].blend);
   const tint = film === 'chameleon' ? '#7187b8' : film === 'xr88' ? '#c5d0da' : color;
   return setMaterialTint(original, tint, {
-    blend: options.blendOverride ?? ((options.calibration === 'nissan-gtr') ? calibratedBlend : options.calibration === 'audi-a4' ? audiBlend : film === 'chameleon' ? 0.42 : film === 'xr88' ? 0.32 : ({ 30: 0.18, 50: 0.30, 65: 0.40, 85: 0.68, 95: 0.78 } as Record<number, number>)[Math.round(value)] ?? 0.42),
+    blend: options.blendOverride ?? ((options.calibration === 'nissan-gtr' || options.calibration === 'mercedes-g63' || options.calibration === 'vw-golf-gti-mk2' || options.calibration === 'audi-rs6-avant' || options.calibration === 'vw-passat-pro-2025') ? calibratedBlend : options.calibration === 'audi-a4' ? audiBlend : film === 'chameleon' ? 0.42 : film === 'xr88' ? 0.32 : ({ 30: 0.18, 50: 0.30, 65: 0.40, 85: 0.68, 95: 0.78 } as Record<number, number>)[Math.round(value)] ?? 0.42),
     // Keep glazing glossy and non-metallic to avoid a pale, plastic haze.
     roughness: options.calibration === 'nissan-gtr' ? 0.06 : options.calibration === 'audi-a4' ? 0.12 : undefined,
     metalness: (options.calibration === 'audi-a4' || options.calibration === 'nissan-gtr') ? 0 : undefined,
@@ -282,6 +309,8 @@ export default function CarStudio({ content, onBook }: Props) {
   const manualGlassIds = manualGlassByModel[selectedModelId]?.combined || [];
   const [materialRoles, setMaterialRoles] = useState<ReturnType<typeof classifyMaterials>>({ glass: [], windshield: [], frontSide: [], rearSide: [], rearWindshield: [], body: [], headlights: [] });
   const [glassVlt, setGlassVlt] = useState<number>(50);
+  // Nissan GT-R R35 is fixed at the darkest approved tint setting.
+  const effectiveGlassVlt = selectedModelId === 'nissan-gtr' ? 95 : glassVlt;
   const [wrapBrand, setWrapBrand] = useState('3M');
   const [selectedWrapId, setSelectedWrapId] = useState('3m-gloss-black');
   const selectedWrap = WRAP_PRODUCTS.find((p) => p.id === selectedWrapId) || WRAP_PRODUCTS[0];
@@ -398,8 +427,8 @@ export default function CarStudio({ content, onBook }: Props) {
       const glassTargets = getGlassTargets();
       for (const original of glassTargets) {
         if (cancelled || runId !== materialUpdateRunRef.current) return;
-        const updated = tintMaterial(original, glassVlt, 'vlt', {
-          calibration: selectedModelId === 'audi-a4' ? 'audi-a4' : selectedModelId === 'nissan-gtr' ? 'nissan-gtr' : undefined,
+        const updated = tintMaterial(original, effectiveGlassVlt, 'vlt', {
+          calibration: selectedModelId === 'audi-a4' ? 'audi-a4' : selectedModelId === 'nissan-gtr' ? 'nissan-gtr' : selectedModelId === 'mercedes-g63-2025' ? 'mercedes-g63' : selectedModelId === 'vw-golf-gti-mk2' ? 'vw-golf-gti-mk2' : selectedModelId === 'audi-rs6-avant' ? 'audi-rs6-avant' : selectedModelId === 'vw-passat-pro-2025' ? 'vw-passat-pro-2025' : undefined,
         });
         await applyMaterial(updated);
       }
@@ -420,7 +449,7 @@ export default function CarStudio({ content, onBook }: Props) {
     };
     void applyBothServices();
     return () => { cancelled = true; };
-  }, [viewerStatus, glassVlt, wrapColor, wrapFinish, selectedModelId, getGlassTargets, getBodyTargets]);
+  }, [viewerStatus, effectiveGlassVlt, wrapColor, wrapFinish, selectedModelId, getGlassTargets, getBodyTargets]);
 
   const saveVehicleScreenshot = useCallback(() => {
     const api = apiRef.current;
@@ -454,7 +483,7 @@ export default function CarStudio({ content, onBook }: Props) {
   const modelName = `${selectedModel.brand} ${selectedModel.model}`;
 
   const book = () => {
-    const tintPreference = `Затемнување стакла: ${glassVlt}%. Предното ветробранско стакло не се затемнува.`;
+    const tintPreference = `Затемнување стакла: ${effectiveGlassVlt}%. Предното ветробранско стакло не се затемнува.`;
     const wrapPreference = `${selectedWrap?.brand || ''} · ${selectedWrap?.name || wrapColor} · ${(WRAP_FINISHES.find((f) => f.id === wrapFinish) || WRAP_FINISHES[0]).label}`;
     const serviceType = 'WINDOW TINT + CAR WRAP – заедничка 3D конфигурација';
     const preference = `${tintPreference} | Wrap: ${wrapPreference}`;
@@ -494,13 +523,17 @@ export default function CarStudio({ content, onBook }: Props) {
 
         <div className="lg:col-span-5 rounded-2xl bg-[#12121a] border border-[#232332] p-4 sm:p-5">
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">1. Избери марка и модел</label>
-          <select value={selectedModelId} onChange={(e) => setSelectedModelId(e.target.value)} className="w-full rounded-xl bg-[#181824] border border-[#343449] px-3 py-3 text-sm text-white outline-none focus:border-blue-400 mb-5">
+          <select value={selectedModelId} onChange={(e) => { setSelectedModelId(e.target.value); if (['mercedes-g63-2025', 'vw-golf-gti-mk2', 'audi-rs6-avant'].includes(e.target.value)) setGlassVlt(65); else if (e.target.value === 'vw-passat-pro-2025') setGlassVlt(85); }} className="w-full rounded-xl bg-[#181824] border border-[#343449] px-3 py-3 text-sm text-white outline-none focus:border-blue-400 mb-5">
             {CAR_MODELS.map((car) => <option key={car.id} value={car.id}>{car.brand} {car.model}</option>)}
           </select>
           <div className="space-y-3">
           <div className="rounded-xl border border-[#303044] bg-[#181824] p-3">
             <div className="mb-3 flex items-center gap-2"><Film className="h-4 w-4 text-blue-300"/><h3 className="text-xs font-extrabold tracking-wider text-white">TINT · ЗАТЕМНУВАЊЕ СТАКЛА</h3><span className="ml-auto text-[9px] font-bold text-emerald-300">СЕКОГАШ АКТИВНО</span></div>
-            <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Затемнување стакла</label><div className="grid grid-cols-5 gap-2">{VLT_OPTIONS.map((value) => { const active = glassVlt === value; return <button key={value} type="button" onClick={() => setGlassVlt(value)} className={`rounded-lg border py-3 text-sm font-extrabold ${active ? 'border-blue-400 bg-blue-400 text-black' : 'border-[#303044] bg-[#181824] text-slate-300'}`}>{value}%</button>; })}</div><p className="mt-2 text-[10px] text-slate-500">30% е најсветла нијанса, а 95% е најтемна. Затемнувањето се применува само на страничните и задните стакла.</p></div>
+            {selectedModelId === 'nissan-gtr' ? (
+              <div className="rounded-lg border border-blue-500/40 bg-blue-500/10 px-3 py-3 text-sm font-bold text-blue-100">95% · ФИКСИРАНО ЗАТЕМНУВАЊЕ <p className="mt-1 text-[10px] font-normal text-slate-400">Кај Nissan GT-R R35 затемнувањето е фиксирано. Wrap останува достапен.</p></div>
+            ) : (
+              <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Затемнување стакла</label><div className="grid grid-cols-5 gap-2">{VLT_OPTIONS.map((value) => { const active = glassVlt === value; return <button key={value} type="button" onClick={() => setGlassVlt(value)} className={`rounded-lg border py-3 text-sm font-extrabold ${active ? 'border-blue-400 bg-blue-400 text-black' : 'border-[#303044] bg-[#181824] text-slate-300'}`}>{value}%</button>; })}</div><p className="mt-2 text-[10px] text-slate-500">30% е најсветла нијанса, а 95% е најтемна. Затемнувањето се применува само на страничните и задните стакла.</p></div>
+            )}
           </div>
 
           <div className="rounded-xl border border-[#303044] bg-[#181824] p-3">
