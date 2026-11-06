@@ -38,7 +38,6 @@ import {
 } from 'lucide-react';
 
 import tintologyLogo from './assets/images/tintology-owl-metallic.png';
-import priceListImg from './assets/images/tintology-price-list.png';
 import automotiveTintImage from './assets/images/tintology_gallery_suv_1793053360268.jpg';
 import { DEFAULT_SITE_CONTENT, SiteContent } from './siteContent';
 import CarStudio from './CarStudio';
@@ -90,7 +89,7 @@ interface ChatMessage {
 
 export default function App() {
   const [siteContent, setSiteContent] = useState<SiteContent>(DEFAULT_SITE_CONTENT);
-  useEffect(() => { fetch('/api/site-content').then(r => r.ok ? r.json() : null).then(data => { if (data) setSiteContent(data); }).catch(() => {}); }, []);
+  useEffect(() => { fetch('/api/site-content').then(r => r.ok ? r.json() : null).then(data => { if (data) setSiteContent({ ...DEFAULT_SITE_CONTENT, ...data, tintPriceList: Array.isArray(data.tintPriceList) ? data.tintPriceList : DEFAULT_SITE_CONTENT.tintPriceList }); }).catch(() => {}); }, []);
   const phoneDigits = `+389${siteContent.phone.replace(/\D/g, '').replace(/^0/, '')}`;
   const whatsappDigits = phoneDigits.replace(/^\+/, '');
   // Simulator State
@@ -129,10 +128,10 @@ export default function App() {
   const [language, setLanguage] = useState<'mk' | 'sq' | 'en'>('mk');
   const tr = (mk: string, sq: string, en: string) => language === 'sq' ? sq : language === 'en' ? en : mk;
   const serviceMenuItems = [
-    { title: tr('Затемнување автомобилски стакла', 'Errësim i xhamave të automjetit', 'Automotive window tinting'), href: '/zatemnuvanje-stakla', image: automotiveTintImage, alt: 'Монтажа на фолија за затемнување автомобилски стакла', description: tr('Професионално затемнување со избор на нијанси и заштита од сонце.', 'Errësim profesional me nuanca të ndryshme dhe mbrojtje nga dielli.', 'Professional window tinting with shade options and solar protection.') },
-    { title: tr('Замена на шофершајбна', 'Zëvendësim i xhamit të përparmë', 'Windshield replacement'), href: '/zamena-avtostakla', image: 'https://images.pexels.com/photos/11950154/pexels-photo-11950154.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950154.jpg&fm=jpg', alt: 'Работа со лепило при монтажа на автомобилско ветробранско стакло', description: tr('Замена на оштетено ветробранско стакло со правилна монтажа.', 'Zëvendësim i xhamit të dëmtuar me montim profesional.', 'Replacement of damaged windshields with professional installation.') },
+    { title: tr('Затемнување автомобилски стакла', 'Errësim i xhamave të automjetit', 'Automotive window tinting'), href: '/zatemnuvanje-stakla', image: siteContent.tintingSectionImage || automotiveTintImage, alt: 'Монтажа на фолија за затемнување автомобилски стакла', description: tr('Професионално затемнување со избор на нијанси и заштита од сонце.', 'Errësim profesional me nuanca të ndryshme dhe mbrojtje nga dielli.', 'Professional window tinting with shade options and solar protection.') },
+    { title: tr('Замена на шофершајбна', 'Zëvendësim i xhamit të përparmë', 'Windshield replacement'), href: '/zamena-avtostakla', image: siteContent.glassReplacementImage || 'https://images.pexels.com/photos/11950154/pexels-photo-11950154.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950154.jpg&fm=jpg', alt: 'Работа со лепило при монтажа на автомобилско ветробранско стакло', description: tr('Замена на оштетено ветробранско стакло со правилна монтажа.', 'Zëvendësim i xhamit të dëmtuar me montim profesional.', 'Replacement of damaged windshields with professional installation.') },
     { title: tr('Фолии за домови и објекти', 'Filma për shtëpi dhe objekte', 'Films for homes and buildings'), href: '/folii-za-domovi-i-objekti', image: 'https://images.pexels.com/photos/27985107/pexels-photo-27985107.jpeg?cs=srgb&dl=pexels-jan-van-der-wolf-11680885-27985107.jpg&fm=jpg', alt: 'Модерна стаклена фасада на објект', description: tr('Сончева, топлинска и декоративна заштита за домови и деловни објекти.', 'Mbrojtje nga dielli, nxehtësia dhe dekorim për shtëpi e objekte.', 'Solar, heat and decorative films for homes and commercial buildings.') },
-    { title: tr('Репарација на шофершајбна', 'Riparim i xhamit të përparmë', 'Windshield repair'), href: '/reparacija-avtostakla', image: 'https://images.pexels.com/photos/11950155/pexels-photo-11950155.jpeg?auto=compress&cs=tinysrgb&w=1600', alt: 'Техничар врши поправка на автомобилско ветробранско стакло', description: tr('Репарација на оштетувања и мали пукнатини на ветробранско стакло.', 'Riparim i dëmtimeve dhe çarjeve të vogla në xhamin e përparmë.', 'Repair of chips and small cracks in windshields.') },
+    { title: tr('Репарација на шофершајбна', 'Riparim i xhamit të përparmë', 'Windshield repair'), href: '/reparacija-avtostakla', image: siteContent.glassRepairImage || 'https://images.pexels.com/photos/11950156/pexels-photo-11950156.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950156.jpg&fm=jpg', alt: 'Техничар врши поправка на автомобилско ветробранско стакло', description: tr('Репарација на оштетувања и мали пукнатини на ветробранско стакло.', 'Riparim i dëmtimeve dhe çarjeve të vogla në xhamin e përparmë.', 'Repair of chips and small cracks in windshields.') },
     { title: 'PPF · ' + tr('Заштита на бојата', 'Mbrojtje e bojës', 'Paint protection'), href: '/ppf-zastita', image: 'https://images.pexels.com/photos/36021355/pexels-photo-36021355.jpeg?cs=srgb&dl=pexels-tejas-jr-528833302-36021355.jpg&fm=jpg', alt: 'Монтажа на PPF заштитна фолија на автомобил', description: tr('Транспарентна заштита на лакот од гребнатини и секојдневно оштетување.', 'Mbrojtje transparente e bojës nga gërvishtjet dhe dëmtimet e përditshme.', 'Transparent paint protection against scratches and everyday damage.') },
     { title: 'Car Wrap · ' + tr('Промена на боја', 'Ndryshim i ngjyrës', 'Colour change'), href: '/wrap', image: 'https://images.pexels.com/photos/10162528/pexels-photo-10162528.jpeg?cs=srgb&dl=pexels-autorecords-10162528.jpg&fm=jpg', alt: 'Монтажа на винил фолија за промена на боја на автомобил', description: tr('Целосна и делумна промена на боја со винилни фолии.', 'Ndryshim i plotë ose i pjesshëm i ngjyrës me filma vinili.', 'Full or partial colour changes using premium vinyl films.') },
   ];
@@ -451,6 +450,18 @@ export default function App() {
       </section>
 
       {/* ──────────────────────────────────────────────────────────── */}
+
+      <section id="home-shower-film" className="border-t border-[#1c1c28] bg-[#090d14] py-16">
+        <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-[.9fr_1.1fr] lg:items-center lg:px-8">
+          <div><div className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-blue-400">TINTOLOGY · BATHROOM GLASS</div>
+            <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">{tr('Фолија за туш кабини – заштита од бигор', 'Film për kabina dushi – mbrojtje kundër gëlqeres', 'Shower enclosure film – anti-limescale protection')}</h2>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-400">{tr('Специјална фолија за стакло на туш кабини, наменета да го олесни чистењето и да го намали задржувањето на капки и наслаги. Ефектот зависи од конкретниот производ и правилното одржување.', 'Film i posaçëm për xhamin e kabinave të dushit, i projektuar për të lehtësuar pastrimin dhe për të zvogëluar mbetjen e pikave dhe depozitave. Efekti varet nga produkti dhe mirëmbajtja.', 'Specialist film for shower glass, designed to make cleaning easier and reduce water spotting and deposits. Results depend on the specific product and correct care.')}</p>
+            <a href="/folija-za-tus-kabini" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-bold text-[#07111d] transition hover:bg-blue-400">{tr('Повеќе информации', 'Më shumë informacion', 'More information')} <ChevronRight className="h-4 w-4"/></a>
+          </div>
+          <a href="/folija-za-tus-kabini" className="group relative block min-h-[280px] overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] sm:min-h-[360px]"><img src={siteContent.showerFilmImage || DEFAULT_SITE_CONTENT.showerFilmImage} alt="Стаклена туш кабина со заштитна фолија" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-[#050a12]/80 via-transparent to-transparent"/><span className="absolute bottom-5 left-5 rounded-lg border border-white/20 bg-black/35 px-3 py-2 text-sm font-bold text-white">Anti Limescale · Shower Glass</span></a>
+        </div>
+      </section>
+
       {/* TINTOLOGY SERVICE SHOWCASES — MATCH ARCHITECTURAL REFERENCE */}
       {/* The architectural-films section above is intentionally untouched. */}
       {/* ──────────────────────────────────────────────────────────── */}
@@ -833,7 +844,14 @@ export default function App() {
               </button>
             </div>
             <div className="overflow-y-auto p-2 sm:p-4">
-              <img src={priceListImg} alt="Tintology ценовник со цени во македонски денари" className="mx-auto h-auto w-full max-w-4xl rounded-lg" />
+              <div className="grid gap-4 sm:grid-cols-2">
+                {([...siteContent.tintPriceList].sort((a, b) => a.order - b.order)).map((item) => <article key={item.id} className="rounded-xl border border-[#263548] bg-[#111a27] p-5 shadow-lg shadow-black/20">
+                  <div className="text-[10px] font-bold uppercase tracking-[.18em] text-blue-300">{item.group}</div>
+                  <h3 className="mt-2 text-base font-extrabold text-white">{item.title}</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-slate-400">{item.description}</p>
+                  <div className="mt-4 flex items-end justify-between gap-3 border-t border-slate-700/70 pt-3"><span className="text-xs text-slate-400">{item.warranty !== '—' ? item.warranty : 'Услуга'}</span><strong className="whitespace-nowrap text-xl font-black text-blue-300">{item.price.toLocaleString('mk-MK')} ден.</strong></div>
+                </article>)}
+              </div>
             </div>
           </div>
         </div>
