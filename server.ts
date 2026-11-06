@@ -34,7 +34,7 @@ const DEFAULT_CONTENT = {
     { id: 'remove-rear', title: 'Отстранување – заден дел', description: 'Отстранување на стара фолија од задниот дел на автомобилот.', price: 800, warranty: '—', group: 'Отстранување фолија', order: 7 },
     { id: 'remove-all', title: 'Отстранување – сите стакла', description: 'Отстранување на стара фолија од сите стакла на автомобилот.', price: 1200, warranty: '—', group: 'Отстранување фолија', order: 8 },
   ],
-  tintingSectionImage: '/images/tintology_gallery_suv_1793053360268.jpg',
+  tintingSectionImage: '',
   glassReplacementImage: 'https://images.pexels.com/photos/11950154/pexels-photo-11950154.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950154.jpg&fm=jpg',
   glassRepairImage: 'https://images.pexels.com/photos/11950156/pexels-photo-11950156.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950156.jpg&fm=jpg',
   showerFilmImage: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=85',
