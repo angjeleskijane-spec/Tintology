@@ -266,6 +266,44 @@ export default function App() {
     }
   };
 
+  const homepageShowcaseItems = [
+        {
+          id: 'home-automotive-tint', eyebrow: 'TINTOLOGY · АВТОМОБИЛСКИ ФОЛИИ',
+          title: tr('Затемнување автомобилски стакла', 'Errësim i xhamave të automjetit', 'Automotive window tinting'),
+          description: tr('Повеќе комфор зад воланот со внимателно избрана нијанса, намален отсјај и дополнителна заштита од сончевата топлина. Изборот на фолија го прилагодуваме на возилото и твоите желби.', 'Më shumë rehati pas timonit me nuancë të zgjedhur me kujdes, më pak shkëlqim dhe mbrojtje shtesë nga nxehtësia e diellit. Filmin e përshtatim me automjetin dhe dëshirat tuaja.', 'More comfort behind the wheel with a carefully selected shade, reduced glare and added protection from solar heat. We match the film to your vehicle and preferences.'),
+          href: '/zatemnuvanje-stakla', image: serviceMenuItems[0].image, alt: serviceMenuItems[0].alt,
+          points: [tr('Избор на нијанси и степен на затемнување','Zgjedhje e nuancave dhe nivelit të errësimit','Shade and tint-level options'), tr('Прецизна монтажа на стаклата','Montim i saktë në xhama','Precise glass installation')]
+        },
+        {
+          id: 'home-windshield-replacement', eyebrow: 'TINTOLOGY · ЗАМЕНА НА СТАКЛА',
+          title: tr('Замена на шофершајбна', 'Zëvendësim i xhamit të përparmë', 'Windshield replacement'),
+          description: tr('Кога оштетувањето бара ново стакло, важни се точната спецификација и правилната монтажа. Проверуваме сензори, камери, грејачи и опрема за да се избере соодветно решение за возилото.', 'Kur dëmtimi kërkon xham të ri, rëndësi kanë specifikimi i saktë dhe montimi i duhur. Kontrollojmë sensorët, kamerat, ngrohësit dhe pajisjet për të zgjedhur zgjidhjen e përshtatshme.', 'When damage calls for new glass, correct specifications and proper installation matter. We check sensors, cameras, heating elements and equipment to select the right solution.'),
+          href: '/zamena-avtostakla', image: serviceMenuItems[1].image, alt: serviceMenuItems[1].alt,
+          points: [tr('Проверка според марка и модел','Kontroll sipas markës dhe modelit','Vehicle-specific compatibility check'), tr('Внимателна подготовка и монтажа','Përgatitje dhe montim i kujdesshëm','Careful preparation and installation')]
+        },
+        {
+          id: 'home-windshield-repair', eyebrow: 'TINTOLOGY · РЕПАРАЦИЈА',
+          title: tr('Репарација на шофершајбна', 'Riparim i xhamit të përparmë', 'Windshield repair'),
+          description: tr('Малото оштетување не мора секогаш да значи замена на целото стакло. Ја проверуваме големината, позицијата и типот на оштетувањето и проценуваме дали може безбедно да се репарира.', 'Dëmtimi i vogël nuk do të thotë gjithmonë zëvendësim i gjithë xhamit. Kontrollojmë madhësinë, pozicionin dhe llojin e dëmtimit dhe vlerësojmë nëse mund të riparohet në mënyrë të sigurt.', 'A small chip does not always mean the whole windshield needs replacing. We assess the size, position and type of damage to determine whether a safe repair is possible.'),
+          href: '/reparacija-avtostakla', image: serviceMenuItems[2].image, alt: serviceMenuItems[2].alt,
+          points: [tr('Проценка пред секоја интервенција','Vlerësim para çdo ndërhyrjeje','Assessment before every repair'), tr('Поправка на соодветни мали оштетувања','Riparim i dëmtimeve të vogla të përshtatshme','Repair of suitable minor damage')]
+        },
+        {
+          id: 'home-ppf-protection', eyebrow: 'TINTOLOGY · PPF ЗАШТИТА',
+          title: tr('Заштити го оригиналниот изглед на бојата', 'Mbroni pamjen origjinale të bojës', 'Protect the original paint finish'),
+          description: tr('PPF создава дополнителен транспарентен слој врз автомобилскиот лак. Помага да се намали ризикот од ситни камчиња, лесни гребнатини и секојдневно абење на најизложените делови.', 'PPF krijon një shtresë shtesë transparente mbi bojën e automjetit. Ndihmon në uljen e rrezikut nga gurëzat, gërvishtjet e lehta dhe konsumimi i përditshëm në pjesët më të ekspozuara.', 'PPF adds a transparent layer over automotive paint, helping reduce the risk of stone chips, light scratches and everyday wear on exposed areas.'),
+          href: '/ppf-zastita', image: serviceMenuItems[6].image, alt: serviceMenuItems[6].alt,
+          points: [tr('Заштита на избрани панели или поголеми зони','Mbrojtje e paneleve ose zonave më të mëdha','Protection for selected panels or larger areas'), tr('Транспарентен финиш','Përfundim transparent','Transparent finish')]
+        },
+        {
+          id: 'home-car-wrap', eyebrow: 'TINTOLOGY · CAR WRAP',
+          title: tr('Промени го изгледот. Зачувај го карактерот.', 'Ndrysho pamjen. Ruaj karakterin.', 'Change the look. Keep the character.'),
+          description: tr('Со винилна фолија можеш да му дадеш нов изглед на автомобилот — од целосна промена на боја до внимателно избрани детали. Разгледај различни бои и финиши пред да ја донесеш одлуката.', 'Me film vinili mund t’i japësh automjetit pamje të re — nga ndryshimi i plotë i ngjyrës deri te detajet e zgjedhura. Shiko ngjyra dhe përfundime të ndryshme para vendimit.', 'Vinyl film gives your vehicle a new look, from a full colour change to carefully selected details. Explore colours and finishes before deciding.'),
+          href: '/wrap', image: serviceMenuItems[5].image, alt: serviceMenuItems[5].alt,
+          points: [tr('Целосна или делумна промена на боја','Ndryshim i plotë ose i pjesshëm i ngjyrës','Full or partial colour change'), tr('Избор на бои и финиши','Zgjedhje e ngjyrave dhe përfundimeve','Choice of colours and finishes')]
+        }
+  ];
+
   return (
     <div className="min-h-screen bg-[#09090b] text-slate-100 selection:bg-blue-500 selection:text-black">
       {/* ──────────────────────────────────────────────────────────── */}
@@ -434,43 +472,7 @@ export default function App() {
       {/* TINTOLOGY SERVICE SHOWCASES — MATCH ARCHITECTURAL REFERENCE */}
       {/* The architectural-films section above is intentionally untouched. */}
       {/* ──────────────────────────────────────────────────────────── */}
-      {[
-        {
-          id: 'home-automotive-tint', eyebrow: 'TINTOLOGY · АВТОМОБИЛСКИ ФОЛИИ',
-          title: tr('Затемнување автомобилски стакла', 'Errësim i xhamave të automjetit', 'Automotive window tinting'),
-          description: tr('Повеќе комфор зад воланот со внимателно избрана нијанса, намален отсјај и дополнителна заштита од сончевата топлина. Изборот на фолија го прилагодуваме на возилото и твоите желби.', 'Më shumë rehati pas timonit me nuancë të zgjedhur me kujdes, më pak shkëlqim dhe mbrojtje shtesë nga nxehtësia e diellit. Filmin e përshtatim me automjetin dhe dëshirat tuaja.', 'More comfort behind the wheel with a carefully selected shade, reduced glare and added protection from solar heat. We match the film to your vehicle and preferences.'),
-          href: '/zatemnuvanje-stakla', image: serviceMenuItems[0].image, alt: serviceMenuItems[0].alt,
-          points: [tr('Избор на нијанси и степен на затемнување','Zgjedhje e nuancave dhe nivelit të errësimit','Shade and tint-level options'), tr('Прецизна монтажа на стаклата','Montim i saktë në xhama','Precise glass installation')]
-        },
-        {
-          id: 'home-windshield-replacement', eyebrow: 'TINTOLOGY · ЗАМЕНА НА СТАКЛА',
-          title: tr('Замена на шофершајбна', 'Zëvendësim i xhamit të përparmë', 'Windshield replacement'),
-          description: tr('Кога оштетувањето бара ново стакло, важни се точната спецификација и правилната монтажа. Проверуваме сензори, камери, грејачи и опрема за да се избере соодветно решение за возилото.', 'Kur dëmtimi kërkon xham të ri, rëndësi kanë specifikimi i saktë dhe montimi i duhur. Kontrollojmë sensorët, kamerat, ngrohësit dhe pajisjet për të zgjedhur zgjidhjen e përshtatshme.', 'When damage calls for new glass, correct specifications and proper installation matter. We check sensors, cameras, heating elements and equipment to select the right solution.'),
-          href: '/zamena-avtostakla', image: serviceMenuItems[1].image, alt: serviceMenuItems[1].alt,
-          points: [tr('Проверка според марка и модел','Kontroll sipas markës dhe modelit','Vehicle-specific compatibility check'), tr('Внимателна подготовка и монтажа','Përgatitje dhe montim i kujdesshëm','Careful preparation and installation')]
-        },
-        {
-          id: 'home-windshield-repair', eyebrow: 'TINTOLOGY · РЕПАРАЦИЈА',
-          title: tr('Репарација на шофершајбна', 'Riparim i xhamit të përparmë', 'Windshield repair'),
-          description: tr('Малото оштетување не мора секогаш да значи замена на целото стакло. Ја проверуваме големината, позицијата и типот на оштетувањето и проценуваме дали може безбедно да се репарира.', 'Dëmtimi i vogël nuk do të thotë gjithmonë zëvendësim i gjithë xhamit. Kontrollojmë madhësinë, pozicionin dhe llojin e dëmtimit dhe vlerësojmë nëse mund të riparohet në mënyrë të sigurt.', 'A small chip does not always mean the whole windshield needs replacing. We assess the size, position and type of damage to determine whether a safe repair is possible.'),
-          href: '/reparacija-avtostakla', image: serviceMenuItems[2].image, alt: serviceMenuItems[2].alt,
-          points: [tr('Проценка пред секоја интервенција','Vlerësim para çdo ndërhyrjeje','Assessment before every repair'), tr('Поправка на соодветни мали оштетувања','Riparim i dëmtimeve të vogla të përshtatshme','Repair of suitable minor damage')]
-        },
-        {
-          id: 'home-ppf-protection', eyebrow: 'TINTOLOGY · PPF ЗАШТИТА',
-          title: tr('Заштити го оригиналниот изглед на бојата', 'Mbroni pamjen origjinale të bojës', 'Protect the original paint finish'),
-          description: tr('PPF создава дополнителен транспарентен слој врз автомобилскиот лак. Помага да се намали ризикот од ситни камчиња, лесни гребнатини и секојдневно абење на најизложените делови.', 'PPF krijon një shtresë shtesë transparente mbi bojën e automjetit. Ndihmon në uljen e rrezikut nga gurëzat, gërvishtjet e lehta dhe konsumimi i përditshëm në pjesët më të ekspozuara.', 'PPF adds a transparent layer over automotive paint, helping reduce the risk of stone chips, light scratches and everyday wear on exposed areas.'),
-          href: '/ppf-zastita', image: serviceMenuItems[6].image, alt: serviceMenuItems[6].alt,
-          points: [tr('Заштита на избрани панели или поголеми зони','Mbrojtje e paneleve ose zonave më të mëdha','Protection for selected panels or larger areas'), tr('Транспарентен финиш','Përfundim transparent','Transparent finish')]
-        },
-        {
-          id: 'home-car-wrap', eyebrow: 'TINTOLOGY · CAR WRAP',
-          title: tr('Промени го изгледот. Зачувај го карактерот.', 'Ndrysho pamjen. Ruaj karakterin.', 'Change the look. Keep the character.'),
-          description: tr('Со винилна фолија можеш да му дадеш нов изглед на автомобилот — од целосна промена на боја до внимателно избрани детали. Разгледај различни бои и финиши пред да ја донесеш одлуката.', 'Me film vinili mund t’i japësh automjetit pamje të re — nga ndryshimi i plotë i ngjyrës deri te detajet e zgjedhura. Shiko ngjyra dhe përfundime të ndryshme para vendimit.', 'Vinyl film gives your vehicle a new look, from a full colour change to carefully selected details. Explore colours and finishes before deciding.'),
-          href: '/wrap', image: serviceMenuItems[5].image, alt: serviceMenuItems[5].alt,
-          points: [tr('Целосна или делумна промена на боја','Ndryshim i plotë ose i pjesshëm i ngjyrës','Full or partial colour change'), tr('Избор на бои и финиши','Zgjedhje e ngjyrave dhe përfundimeve','Choice of colours and finishes')]
-        }
-      ].map((item, index) => (
+      {homepageShowcaseItems.slice(0, 3).map((item, index) => (
         <section key={item.id} id={item.id} className={`border-t border-[#1c1c28] ${index % 2 === 0 ? 'bg-[#080c13]' : 'bg-[#090d14]'} py-16`}>
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className={`grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-center ${index % 2 === 1 ? 'lg:[&>div:first-child]:order-2' : ''}`}>
@@ -529,6 +531,30 @@ export default function App() {
           <a href="/folija-za-tus-kabini" className="group relative block min-h-[280px] overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] sm:min-h-[360px]"><img src={siteContent.showerFilmImage || DEFAULT_SITE_CONTENT.showerFilmImage} alt="Стаклена туш кабина со заштитна фолија" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-[#050a12]/80 via-transparent to-transparent"/><span className="absolute bottom-5 left-5 rounded-lg border border-white/20 bg-black/35 px-3 py-2 text-sm font-bold text-white">Anti Limescale · Shower Glass</span></a>
         </div>
       </section>
+
+      {homepageShowcaseItems.slice(3).reverse().map((item, index) => (
+        <section key={item.id} id={item.id} className={`border-t border-[#1c1c28] ${index % 2 === 0 ? 'bg-[#080c13]' : 'bg-[#090d14]'} py-16`}>
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className={`grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-center ${index % 2 === 1 ? 'lg:[&>div:first-child]:order-2' : ''}`}>
+              <div>
+                <div className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-blue-400">{item.eyebrow}</div>
+                <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">{item.title}</h2>
+                <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-400">{item.description}</p>
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  {item.points.map((point, pointIndex) => <div key={pointIndex} className="flex min-h-20 items-center gap-3 rounded-xl border border-[#263548] bg-[#111a27] p-4 text-sm font-semibold text-slate-200"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-blue-800/50 bg-blue-950/60 text-xs font-extrabold text-blue-300">0{pointIndex + 1}</span>{point}</div>)}
+                </div>
+                <a href={item.href} className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-bold text-[#07111d] transition hover:bg-blue-400">{tr('Истражи ги решенијата', 'Eksploro zgjidhjet', 'Explore solutions')} <ChevronRight className="h-4 w-4"/></a>
+              </div>
+              <a href={item.href} aria-label={item.title} className="group relative block min-h-[300px] overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] shadow-2xl shadow-blue-950/20 sm:min-h-[390px]">
+                <img src={item.image} alt={item.alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a12]/90 via-[#050a12]/10 to-transparent" />
+                <span className="absolute bottom-5 left-5 right-5 flex items-center justify-between gap-4 text-sm font-bold text-white"><span>{item.title}</span><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/25 bg-black/30 text-blue-200 backdrop-blur"><ChevronRight className="h-5 w-5"/></span></span>
+                <span className="absolute left-5 top-5 rounded-lg border border-white/20 bg-black/35 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-blue-100 backdrop-blur">{item.eyebrow}</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      ))}
 
       {/* 9. CONTACT, LOCATION & INQUIRY FORM                          */}
       {/* ──────────────────────────────────────────────────────────── */}
