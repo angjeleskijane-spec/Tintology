@@ -45,6 +45,20 @@ export default function Admin() {
   const grossProfitEUR = actualSellingEUR - baseEUR;
   const grossMarginEURPct = actualSellingEUR > 0 ? grossProfitEUR / actualSellingEUR * 100 : 0;
   const formatEUR = (value: number) => `${value.toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  function updateTintPrice(index: number, key: 'title' | 'description' | 'price' | 'warranty' | 'group', value: string) {
+    setContent(prev => ({ ...prev, tintPriceList: prev.tintPriceList.map((item, i) => i === index ? { ...item, [key]: key === 'price' ? Math.max(0, Math.min(1000000, Number(value) || 0)) : value } : item) }));
+  }
+  function addTintPrice() {
+    const nextOrder = Math.max(0, ...content.tintPriceList.map(item => item.order)) + 1;
+    setContent(prev => ({ ...prev, tintPriceList: [...prev.tintPriceList, { id: `custom-${Date.now()}`, title: 'Нова услуга', description: '', price: 0, warranty: '—', group: 'Друго', order: nextOrder }] }));
+  }
+  function removeTintPrice(index: number) {
+    setContent(prev => ({ ...prev, tintPriceList: prev.tintPriceList.filter((_, i) => i !== index).map((item, i) => ({ ...item, order: i + 1 })) }));
+  }
+  function moveTintPrice(index: number, direction: -1 | 1) {
+    setContent(prev => { const items = [...prev.tintPriceList].sort((a,b) => a.order-b.order); const target = index + direction; if (target < 0 || target >= items.length) return prev; [items[index], items[target]] = [items[target], items[index]]; return { ...prev, tintPriceList: items.map((item, i) => ({ ...item, order: i + 1 })) }; });
+  }
+
 
   async function loadContent() {
     const session = await fetch('/api/admin/session');
@@ -138,6 +152,26 @@ export default function Admin() {
           <div className="grid gap-5">{fields.map(([key, label]) => <label key={key} className="block text-sm font-semibold">{label}
             {key === 'heroSubtitle' ? <textarea rows={3} value={content[key]} onChange={e => setContent(p => ({ ...p, [key]: e.target.value }))} className="mt-2 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 font-normal outline-none focus:border-blue-400" /> : <input value={content[key]} onChange={e => setContent(p => ({ ...p, [key]: e.target.value }))} className="mt-2 w-full rounded-lg bg-[#08090d] border border-slate-700 p-3 font-normal outline-none focus:border-blue-400" />}
           </label>)}</div>
+        </section>
+
+        <section className="rounded-2xl border border-blue-900/50 bg-[#101a28] p-5 sm:p-7 mb-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-5"><div><h2 className="text-lg font-bold">ЦЕНОВНИК – XPEL и услуги</h2><p className="mt-1 text-xs text-slate-400">Додавај, менувај, бриши и менувај го редоследот на јавните ставки.</p></div><button type="button" onClick={addTintPrice} className="rounded-lg bg-blue-500 px-4 py-2 text-sm font-bold text-black">+ Додај ставка</button></div>
+          <div className="space-y-4">{[...content.tintPriceList].sort((a,b)=>a.order-b.order).map((item, sortedIndex) => {
+            const actualIndex = content.tintPriceList.findIndex(entry => entry.id === item.id);
+            return <div key={item.id} className="rounded-xl border border-slate-700 bg-[#0a111b] p-4">
+              <div className="mb-3 flex items-center justify-between gap-3"><span className="text-xs font-bold text-blue-300">Ставка {sortedIndex+1}</span><div className="flex gap-2"><button type="button" onClick={()=>moveTintPrice(sortedIndex,-1)} disabled={sortedIndex===0} className="rounded border border-slate-600 px-3 py-1 text-xs disabled:opacity-30">↑</button><button type="button" onClick={()=>moveTintPrice(sortedIndex,1)} disabled={sortedIndex===content.tintPriceList.length-1} className="rounded border border-slate-600 px-3 py-1 text-xs disabled:opacity-30">↓</button><button type="button" onClick={()=>removeTintPrice(actualIndex)} className="rounded border border-rose-900 px-3 py-1 text-xs text-rose-300">Избриши</button></div></div>
+              <div className="grid gap-3 sm:grid-cols-2"><label className="text-xs text-slate-400">Наслов<input value={item.title} onChange={e=>updateTintPrice(actualIndex,'title',e.target.value)} className="mt-1 w-full rounded-lg border border-slate-700 bg-[#08090d] p-2.5 text-white"/></label><label className="text-xs text-slate-400">Група<input value={item.group} onChange={e=>updateTintPrice(actualIndex,'group',e.target.value)} className="mt-1 w-full rounded-lg border border-slate-700 bg-[#08090d] p-2.5 text-white"/></label><label className="text-xs text-slate-400">Цена (МКД)<input type="number" min="0" value={item.price} onChange={e=>updateTintPrice(actualIndex,'price',e.target.value)} className="mt-1 w-full rounded-lg border border-slate-700 bg-[#08090d] p-2.5 text-white"/></label><label className="text-xs text-slate-400">Гаранција<input value={item.warranty} onChange={e=>updateTintPrice(actualIndex,'warranty',e.target.value)} className="mt-1 w-full rounded-lg border border-slate-700 bg-[#08090d] p-2.5 text-white"/></label><label className="text-xs text-slate-400 sm:col-span-2">Опис<textarea rows={2} value={item.description} onChange={e=>updateTintPrice(actualIndex,'description',e.target.value)} className="mt-1 w-full rounded-lg border border-slate-700 bg-[#08090d] p-2.5 text-white"/></label></div>
+            </div>;
+          })}</div>
+        </section>
+        <section className="rounded-2xl border border-slate-800 bg-[#11131b] p-5 sm:p-7 mb-6">
+          <h2 className="text-lg font-bold mb-2">Слики на почетната страна</h2><p className="mb-4 text-xs text-slate-400">Внеси директен HTTPS линк до сликата. Измените се зачувуваат со копчето „Зачувај промени“.</p>
+          <div className="grid gap-4 sm:grid-cols-2">{([
+            ['tintingSectionImage','Затемнување стакла'],
+            ['glassReplacementImage','Промена на стакло'],
+            ['glassRepairImage','Репарација – слика со пукнатина'],
+            ['showerFilmImage','Фолија за туш кабини'],
+          ] as const).map(([key,label])=><label key={key} className="text-xs text-slate-400">{label}<input value={content[key]} onChange={e=>setContent(prev=>({...prev,[key]:e.target.value}))} placeholder="https://..." className="mt-1 w-full rounded-lg border border-slate-700 bg-[#08090d] p-3 text-white"/></label>)}</div>
         </section>
         <section className="rounded-2xl border border-slate-800 bg-[#11131b] p-5 sm:p-7 mb-6">
           <h2 className="text-lg font-bold mb-1">Цени во денари (МКД)</h2><p className="text-xs text-slate-400 mb-5">Измени ги износите што ги користи калкулаторот на веб-страницата.</p>
