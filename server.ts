@@ -121,8 +121,16 @@ function isAdmin(req: express.Request) {
   return true;
 }
 async function readContent() {
-  try { return { ...DEFAULT_CONTENT, ...JSON.parse(await readFile(CONTENT_PATH, 'utf8')) }; }
-  catch { return DEFAULT_CONTENT; }
+  try {
+    const saved = JSON.parse(await readFile(CONTENT_PATH, 'utf8'));
+    return { ...DEFAULT_CONTENT, ...saved,
+      tintPriceList: Array.isArray(saved.tintPriceList) ? saved.tintPriceList : DEFAULT_CONTENT.tintPriceList,
+      tintingSectionImage: saved.tintingSectionImage || DEFAULT_CONTENT.tintingSectionImage,
+      glassReplacementImage: saved.glassReplacementImage || DEFAULT_CONTENT.glassReplacementImage,
+      glassRepairImage: saved.glassRepairImage || DEFAULT_CONTENT.glassRepairImage,
+      showerFilmImage: saved.showerFilmImage || DEFAULT_CONTENT.showerFilmImage,
+    };
+  } catch { return DEFAULT_CONTENT; }
 }
 function validateContent(input: any) {
   if (!input || typeof input !== 'object') return null;
