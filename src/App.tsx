@@ -425,43 +425,11 @@ export default function App() {
       {/* ──────────────────────────────────────────────────────────── */}
 
 
-      <section id="home-films-for-buildings" className="border-t border-[#1c1c28] bg-[#080c13] py-16">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
-            <div>
-              <div className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-blue-400">TINTOLOGY · ЗА ДОМОВИ И ОБЈЕКТИ</div>
-              <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">{tr('Фолии за домови и објекти', 'Filma për shtëpi dhe objekte', 'Films for homes and buildings')}</h2>
-              <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-400">{tr('Решенија за контрола на сончевата топлина, приватност, заштита и декоративен изглед на стаклените површини.', 'Zgjidhje për kontrollin e nxehtësisë diellore, privatësi, mbrojtje dhe pamje dekorative të sipërfaqeve prej xhami.', 'Solutions for solar heat control, privacy, protection and decorative glass finishes.')}</p>
-              <a href="/folii-za-domovi-i-objekti" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-bold text-[#07111d] transition hover:bg-blue-400">{tr('Истражи ги решенијата', 'Eksploro zgjidhjet', 'Explore solutions')} <ChevronRight className="h-4 w-4"/></a>
-            </div>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              {[
-                { title: tr('Куќи и станбени објекти','Shtëpi dhe objekte banimi','Homes and residential buildings'), image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=85', alt: 'Модерна куќа со големи стаклени прозорци', href: '/folii-za-domovi-i-objekti#architectural-solar' },
-                { title: tr('Стаклени фасади','Fasada xhami','Glass facades'), image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=85', alt: 'Современа зграда со стаклена фасада', href: '/folii-za-domovi-i-objekti#architectural-privacy' },
-                { title: tr('Кровни прозорци','Dritare çatie','Roof windows'), image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85', alt: 'Светол поткровен простор со кровни прозорци', href: '/folii-za-domovi-i-objekti#architectural-safety' },
-                { title: tr('Стаклени покриви','Çati xhami','Glass roofs'), image: 'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=900&q=85', alt: 'Архитектура со стаклен покрив и природна светлина', href: '/folii-za-domovi-i-objekti#architectural-decorative' },
-              ].map((item) => <a key={item.title} href={item.href} className="group relative min-h-36 overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] sm:min-h-44">
-                <img src={item.image} alt={item.alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a12]/95 via-[#050a12]/25 to-transparent" />
-                <span className="absolute bottom-0 left-0 right-0 p-3 text-sm font-bold text-white sm:p-4">{item.title}<ChevronRight className="ml-1 inline h-4 w-4 text-blue-300 transition-transform group-hover:translate-x-1"/></span>
-              </a>)}
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* ──────────────────────────────────────────────────────────── */}
 
-      <section id="home-shower-film" className="border-t border-[#1c1c28] bg-[#090d14] py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-[.9fr_1.1fr] lg:items-center lg:px-8">
-          <div><div className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-blue-400">TINTOLOGY · BATHROOM GLASS</div>
-            <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">{tr('Фолија за туш кабини – заштита од бигор', 'Film për kabina dushi – mbrojtje kundër gëlqeres', 'Shower enclosure film – anti-limescale protection')}</h2>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-400">{tr('Специјална фолија за стакло на туш кабини, наменета да го олесни чистењето и да го намали задржувањето на капки и наслаги. Ефектот зависи од конкретниот производ и правилното одржување.', 'Film i posaçëm për xhamin e kabinave të dushit, i projektuar për të lehtësuar pastrimin dhe për të zvogëluar mbetjen e pikave dhe depozitave. Efekti varet nga produkti dhe mirëmbajtja.', 'Specialist film for shower glass, designed to make cleaning easier and reduce water spotting and deposits. Results depend on the specific product and correct care.')}</p>
-            <a href="/folija-za-tus-kabini" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-bold text-[#07111d] transition hover:bg-blue-400">{tr('Повеќе информации', 'Më shumë informacion', 'More information')} <ChevronRight className="h-4 w-4"/></a>
-          </div>
-          <a href="/folija-za-tus-kabini" className="group relative block min-h-[280px] overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] sm:min-h-[360px]"><img src={siteContent.showerFilmImage || DEFAULT_SITE_CONTENT.showerFilmImage} alt="Стаклена туш кабина со заштитна фолија" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-[#050a12]/80 via-transparent to-transparent"/><span className="absolute bottom-5 left-5 rounded-lg border border-white/20 bg-black/35 px-3 py-2 text-sm font-bold text-white">Anti Limescale · Shower Glass</span></a>
-        </div>
-      </section>
+
 
       {/* TINTOLOGY SERVICE SHOWCASES — MATCH ARCHITECTURAL REFERENCE */}
       {/* The architectural-films section above is intentionally untouched. */}
@@ -525,6 +493,42 @@ export default function App() {
           </div>
         </section>
       ))}
+
+      <section id="home-films-for-buildings" className="border-t border-[#1c1c28] bg-[#080c13] py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
+            <div>
+              <div className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-blue-400">TINTOLOGY · ЗА ДОМОВИ И ОБЈЕКТИ</div>
+              <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">{tr('Фолии за домови и објекти', 'Filma për shtëpi dhe objekte', 'Films for homes and buildings')}</h2>
+              <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-400">{tr('Решенија за контрола на сончевата топлина, приватност, заштита и декоративен изглед на стаклените површини.', 'Zgjidhje për kontrollin e nxehtësisë diellore, privatësi, mbrojtje dhe pamje dekorative të sipërfaqeve prej xhami.', 'Solutions for solar heat control, privacy, protection and decorative glass finishes.')}</p>
+              <a href="/folii-za-domovi-i-objekti" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-bold text-[#07111d] transition hover:bg-blue-400">{tr('Истражи ги решенијата', 'Eksploro zgjidhjet', 'Explore solutions')} <ChevronRight className="h-4 w-4"/></a>
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {[
+                { title: tr('Куќи и станбени објекти','Shtëpi dhe objekte banimi','Homes and residential buildings'), image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=85', alt: 'Модерна куќа со големи стаклени прозорци', href: '/folii-za-domovi-i-objekti#architectural-solar' },
+                { title: tr('Стаклени фасади','Fasada xhami','Glass facades'), image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=85', alt: 'Современа зграда со стаклена фасада', href: '/folii-za-domovi-i-objekti#architectural-privacy' },
+                { title: tr('Кровни прозорци','Dritare çatie','Roof windows'), image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85', alt: 'Светол поткровен простор со кровни прозорци', href: '/folii-za-domovi-i-objekti#architectural-safety' },
+                { title: tr('Стаклени покриви','Çati xhami','Glass roofs'), image: 'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=900&q=85', alt: 'Архитектура со стаклен покрив и природна светлина', href: '/folii-za-domovi-i-objekti#architectural-decorative' },
+              ].map((item) => <a key={item.title} href={item.href} className="group relative min-h-36 overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] sm:min-h-44">
+                <img src={item.image} alt={item.alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a12]/95 via-[#050a12]/25 to-transparent" />
+                <span className="absolute bottom-0 left-0 right-0 p-3 text-sm font-bold text-white sm:p-4">{item.title}<ChevronRight className="ml-1 inline h-4 w-4 text-blue-300 transition-transform group-hover:translate-x-1"/></span>
+              </a>)}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="home-shower-film" className="border-t border-[#1c1c28] bg-[#090d14] py-16">
+        <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-[.9fr_1.1fr] lg:items-center lg:px-8">
+          <div><div className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-blue-400">TINTOLOGY · BATHROOM GLASS</div>
+            <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">{tr('Фолија за туш кабини – заштита од бигор', 'Film për kabina dushi – mbrojtje kundër gëlqeres', 'Shower enclosure film – anti-limescale protection')}</h2>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-400">{tr('Специјална фолија за стакло на туш кабини, наменета да го олесни чистењето и да го намали задржувањето на капки и наслаги. Ефектот зависи од конкретниот производ и правилното одржување.', 'Film i posaçëm për xhamin e kabinave të dushit, i projektuar për të lehtësuar pastrimin dhe për të zvogëluar mbetjen e pikave dhe depozitave. Efekti varet nga produkti dhe mirëmbajtja.', 'Specialist film for shower glass, designed to make cleaning easier and reduce water spotting and deposits. Results depend on the specific product and correct care.')}</p>
+            <a href="/folija-za-tus-kabini" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-bold text-[#07111d] transition hover:bg-blue-400">{tr('Повеќе информации', 'Më shumë informacion', 'More information')} <ChevronRight className="h-4 w-4"/></a>
+          </div>
+          <a href="/folija-za-tus-kabini" className="group relative block min-h-[280px] overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] sm:min-h-[360px]"><img src={siteContent.showerFilmImage || DEFAULT_SITE_CONTENT.showerFilmImage} alt="Стаклена туш кабина со заштитна фолија" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-[#050a12]/80 via-transparent to-transparent"/><span className="absolute bottom-5 left-5 rounded-lg border border-white/20 bg-black/35 px-3 py-2 text-sm font-bold text-white">Anti Limescale · Shower Glass</span></a>
+        </div>
+      </section>
 
       {/* 9. CONTACT, LOCATION & INQUIRY FORM                          */}
       {/* ──────────────────────────────────────────────────────────── */}
