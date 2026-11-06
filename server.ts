@@ -36,7 +36,7 @@ const DEFAULT_CONTENT = {
   ],
   tintingSectionImage: '',
   glassReplacementImage: 'https://images.pexels.com/photos/11950154/pexels-photo-11950154.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950154.jpg&fm=jpg',
-  glassRepairImage: 'https://images.pexels.com/photos/11950156/pexels-photo-11950156.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950156.jpg&fm=jpg',
+  glassRepairImage: '',
   showerFilmImage: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=85',
   prices: {
     all: { standard: [5500, 5500, 7500, 9500], lux: [8000, 8000, 11000, 14000] },
