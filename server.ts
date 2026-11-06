@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '12mb' }));
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || '';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
@@ -158,6 +158,22 @@ function validateContent(input: any) {
   const tintPriceList = Array.isArray(input.tintPriceList) && input.tintPriceList.length <= 80 ? input.tintPriceList.map((item: any, index: number) => ({ id: String(item.id || 'price-' + index).slice(0, 80), title: str(item.title, 'Услуга'), description: str(item.description, ''), price: Number.isInteger(item.price) && item.price >= 0 && item.price <= 1000000 ? item.price : 0, warranty: str(item.warranty, '—'), group: str(item.group, 'Друго'), order: Number.isInteger(item.order) ? item.order : index + 1 })).filter((item: any) => /^[a-z0-9-]+$/i.test(item.id)) : DEFAULT_CONTENT.tintPriceList;
   return { heroTitle: str(input.heroTitle, DEFAULT_CONTENT.heroTitle), heroSubtitle: str(input.heroSubtitle, DEFAULT_CONTENT.heroSubtitle), phone: str(input.phone, DEFAULT_CONTENT.phone), location: str(input.location, DEFAULT_CONTENT.location), hours: str(input.hours, DEFAULT_CONTENT.hours), tintPriceList, ...imageFields, prices, studioPrices };
 }
+
+
+app.post('/api/admin/upload-image', async (req, res) => {
+  if (!isAdmin(req)) return res.status(401).json({ error: 'Потребна е најава.' });
+  const { dataUrl } = req.body || {};
+  const match = typeof dataUrl === 'string' ? dataUrl.match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=]+)$/) : null;
+  if (!match) return res.status(400).json({ error: 'Дозволени се само PNG, JPG и WEBP слики.' });
+  const buffer = Buffer.from(match[2], 'base64');
+  if (!buffer.length || buffer.length > 8 * 1024 * 1024) return res.status(413).json({ error: 'Сликата мора да биде помала од 8 MB.' });
+  const extension = match[1] === 'jpeg' ? 'jpg' : match[1];
+  const filename = `tintology-${Date.now()}-${randomBytes(5).toString('hex')}.${extension}`;
+  const uploadDir = process.env.NODE_ENV === 'production' ? path.join(process.cwd(), 'dist', 'uploads') : path.join(process.cwd(), 'public', 'uploads');
+  await mkdir(uploadDir, { recursive: true });
+  await writeFile(path.join(uploadDir, filename), buffer);
+  res.json({ url: `/uploads/${filename}` });
+});
 
 app.get('/api/admin/session', (req, res) => res.json({ authenticated: isAdmin(req) }));
 app.post('/api/admin/login', (req, res) => {
