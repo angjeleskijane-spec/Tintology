@@ -45,6 +45,26 @@ export default function Admin() {
   const grossProfitEUR = actualSellingEUR - baseEUR;
   const grossMarginEURPct = actualSellingEUR > 0 ? grossProfitEUR / actualSellingEUR * 100 : 0;
   const formatEUR = (value: number) => `${value.toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  async function uploadImage(key: 'tintingSectionImage' | 'glassReplacementImage' | 'glassRepairImage' | 'showerFilmImage', file: File) {
+    if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) { setNotice('Избери PNG, JPG или WEBP слика.'); return; }
+    if (file.size > 8 * 1024 * 1024) { setNotice('Сликата мора да биде помала од 8 MB.'); return; }
+    setBusy(true); setNotice('');
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => typeof reader.result === 'string' ? resolve(reader.result) : reject(new Error('Не успеав да ја прочитам сликата.'));
+        reader.onerror = () => reject(new Error('Не успеав да ја прочитам сликата.'));
+        reader.readAsDataURL(file);
+      });
+      const response = await fetch('/api/admin/upload-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ dataUrl, fileName: file.name }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Поставувањето на сликата не успеа.');
+      setContent(prev => ({ ...prev, [key]: data.url }));
+      setNotice('Сликата е поставена. Зачувај ги промените за да се прикаже на веб-страницата.');
+    } catch (error) { setNotice(error instanceof Error ? error.message : 'Грешка при поставување на сликата.'); }
+    finally { setBusy(false); }
+  }
+
   function updateTintPrice(index: number, key: 'title' | 'description' | 'price' | 'warranty' | 'group', value: string) {
     setContent(prev => ({ ...prev, tintPriceList: prev.tintPriceList.map((item, i) => i === index ? { ...item, [key]: key === 'price' ? Math.max(0, Math.min(1000000, Number(value) || 0)) : value } : item) }));
   }
@@ -171,7 +191,7 @@ export default function Admin() {
             ['glassReplacementImage','Промена на стакло'],
             ['glassRepairImage','Репарација – слика со пукнатина'],
             ['showerFilmImage','Фолија за туш кабини'],
-          ] as const).map(([key,label])=><label key={key} className="text-xs text-slate-400">{label}<input value={content[key]} onChange={e=>setContent(prev=>({...prev,[key]:e.target.value}))} placeholder="https://..." className="mt-1 w-full rounded-lg border border-slate-700 bg-[#08090d] p-3 text-white"/></label>)}</div>
+          ] as const).map(([key,label])=><div key={key} className="rounded-xl border border-slate-700 bg-[#0a111b] p-3"><label className="block text-xs text-slate-300">{label}<input value={content[key]} onChange={e=>setContent(prev=>({...prev,[key]:e.target.value}))} placeholder="https://..." className="mt-1 w-full rounded-lg border border-slate-700 bg-[#08090d] p-3 text-white"/></label><label className="mt-3 block text-xs text-slate-400">Или избери слика од компјутер (PNG/JPG/WEBP, до 8 MB)<input type="file" accept="image/png,image/jpeg,image/webp" disabled={busy} onChange={e=>{const file=e.target.files?.[0];if(file) uploadImage(key,file);e.currentTarget.value='';}} className="mt-1 block w-full text-xs text-slate-300 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-500 file:px-3 file:py-2 file:font-bold file:text-black"/></label>{content[key] && <img src={content[key]} alt={label} className="mt-3 h-28 w-full rounded-lg border border-slate-700 object-cover"/>}</div>)}</div>
         </section>
         <section className="rounded-2xl border border-slate-800 bg-[#11131b] p-5 sm:p-7 mb-6">
           <h2 className="text-lg font-bold mb-1">Цени во денари (МКД)</h2><p className="text-xs text-slate-400 mb-5">Измени ги износите што ги користи калкулаторот на веб-страницата.</p>
