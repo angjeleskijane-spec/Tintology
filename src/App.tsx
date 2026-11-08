@@ -451,8 +451,14 @@ export default function App() {
       <section id="services" className="border-t border-[#1c1c28] bg-[#090d14] py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto mb-9 max-w-3xl text-center">
-            <div className="mb-2 text-xs font-bold uppercase tracking-[.2em] text-blue-400">TINTOLOGY · УСЛУГИ</div>
-            <p className="mt-3 text-sm leading-relaxed text-slate-400">{tr('Сè за стаклата, изгледот и заштитата на автомобилот и објектите.', 'Gjithçka për xhamat, pamjen dhe mbrojtjen e automjeteve dhe objekteve.', 'Everything for glass, appearance and protection of vehicles and buildings.')}</p>
+            <div className="mb-2 text-xs font-bold uppercase tracking-[.2em] text-blue-400">TINTOLOGY · {tr('УСЛУГИ', 'SHËRBIMET', 'SERVICES')}</div>
+            <p className="mt-3 text-sm leading-relaxed text-slate-400">
+              {tr(
+                'Иновативни решенија за стакла, стил, заштита и безбедност – за автомобили и објекти.',
+                'Zgjidhje inovative për xhama, stil, mbrojtje dhe siguri – për automjete dhe objekte.',
+                'Innovative solutions for glass, style, protection, and safety – for vehicles and buildings.'
+              )}
+            </p>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
             {serviceMenuItems.map((item, index) => <a key={item.href + item.title} href={item.href} className="group overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] transition hover:-translate-y-1 hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-950/30">
