@@ -52,7 +52,7 @@ const CAR_MODELS: CarModel[] = APPROVED_CAR_MODEL_ORDER.flatMap((id) =>
   ARCHIVED_CAR_MODELS.filter((car) => car.id === id),
 );
 
-const VLT_OPTIONS = [12, 50, 65, 85, 95];
+const VLT_OPTIONS = [30, 50, 65, 85, 95];
 const WRAP_FINISHES = [
   { id: 'gloss', label: 'Gloss / Сјај', roughness: 0.18, metalness: 0.18 },
   { id: 'highGloss', label: 'High Gloss / Висок сјај', roughness: 0.08, metalness: 0.16 },
@@ -164,7 +164,7 @@ function setMaterialTint(original: SketchfabMaterial, color: string, options: { 
 function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt' | 'xr88' | 'chameleon' = 'vlt', options: { applyOpacity?: boolean; blendOverride?: number; calibration?: 'audi-a4' | 'nissan-gtr' | 'mercedes-g63' | 'vw-golf-gti-mk2' | 'audi-rs6-avant' | 'vw-passat-pro-2025' } = {}) {
   // Simulator darkness scale (not physical VLT). The approved user-facing
   // stops are intentionally nonlinear so each step is visibly darker.
-  // The five customer-facing tint stops run from light (12% total tint) to darkest (95%).
+  // The five customer-facing tint stops run from light (30% total tint) to darkest (95%).
   const standardStops: Record<number, { color: string; opacity: number; blend: number }> = {
     12: { color: '#C2CBD3', opacity: 0.16, blend: 0.10 },
     30: { color: '#929DA7', opacity: 0.28, blend: 0.18 },
@@ -515,7 +515,7 @@ export default function CarStudio({ content, onBook }: Props) {
       <div className="max-w-3xl mb-10">
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-400 mb-2"><Sparkles className="h-4 w-4"/><span>Tintology 3D Car Studio</span></div>
         <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Конфигуратор на автомобили</h2>
-        <p className="mt-3 text-base text-slate-300">Избери автомобил, ротирај го во 3D и испробај Tint и Wrap. Кај затемнувањето, 12% е најсветло, а 95% е најтемно.</p>
+        <p className="mt-3 text-base text-slate-300">Избери автомобил, ротирај го во 3D и испробај Tint и Wrap. Кај затемнувањето, 30% е најсветло, а 95% е најтемно.</p>
       </div>
       <div ref={studioLayoutRef} className={`grid grid-cols-1 lg:grid-cols-12 gap-6 items-start ${isStudioFullscreen ? 'bg-[#080d15] p-4 sm:p-6 overflow-y-auto' : ''}`} style={isStudioFullscreen ? { width: '100vw', height: '100vh', gridTemplateColumns: 'minmax(0, 1.45fr) minmax(340px, .85fr)', alignItems: 'stretch' } : undefined}>
         <div className={`${isStudioFullscreen ? 'lg:col-span-1 min-w-0 min-h-0' : 'lg:col-span-7'} rounded-2xl bg-[#12121a] border border-[#232332] p-4 sm:p-6`}>
@@ -556,7 +556,7 @@ export default function CarStudio({ content, onBook }: Props) {
             {selectedModelId === 'nissan-gtr' ? (
               <div className="rounded-lg border border-blue-500/40 bg-blue-500/10 px-3 py-3 text-sm font-bold text-blue-100">95% · ФИКСИРАНО ЗАТЕМНУВАЊЕ <p className="mt-1 text-[10px] font-normal text-slate-400">Кај Nissan GT-R R35 затемнувањето е фиксирано. Wrap останува достапен.</p></div>
             ) : (
-              <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Затемнување стакла</label><div className="grid grid-cols-5 gap-2">{VLT_OPTIONS.map((value) => { const active = glassVlt === value; return <button key={value} type="button" onClick={() => setGlassVlt(value)} className={`rounded-lg border py-3 text-sm font-extrabold ${active ? 'border-blue-400 bg-blue-400 text-black' : 'border-[#303044] bg-[#181824] text-slate-300'}`}>{value}%</button>; })}</div><p className="mt-2 text-[10px] text-slate-500">12% е најсветла нијанса, а 95% е најтемна. Затемнувањето се применува само на страничните и задните стакла.</p></div>
+              <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Затемнување стакла</label><div className="grid grid-cols-5 gap-2">{VLT_OPTIONS.map((value) => { const active = glassVlt === value; return <button key={value} type="button" onClick={() => setGlassVlt(value)} className={`rounded-lg border py-3 text-sm font-extrabold ${active ? 'border-blue-400 bg-blue-400 text-black' : 'border-[#303044] bg-[#181824] text-slate-300'}`}>{value}%</button>; })}</div><p className="mt-2 text-[10px] text-slate-500">30% е најсветла нијанса, а 95% е најтемна. Затемнувањето се применува само на страничните и задните стакла.</p></div>
             )}
           </div>
 
