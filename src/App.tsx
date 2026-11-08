@@ -133,7 +133,8 @@ export default function App() {
     { title: tr('Затемнување автомобилски стакла', 'Errësim i xhamave të automjetit', 'Automotive window tinting'), href: '/zatemnuvanje-stakla', image: phase25TintImage, alt: 'Монтажа на фолија за затемнување автомобилски стакла', description: tr('Професионално затемнување со избор на нијанси и заштита од сонце.', 'Errësim profesional me nuanca të ndryshme dhe mbrojtje nga dielli.', 'Professional window tinting with shade options and solar protection.') },
     { title: tr('Замена на шофершајбна', 'Zëvendësim i xhamit të përparmë', 'Windshield replacement'), href: '/zamena-avtostakla', image: siteContent.glassReplacementImage || 'https://images.pexels.com/photos/11950154/pexels-photo-11950154.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950154.jpg&fm=jpg', alt: 'Работа со лепило при монтажа на автомобилско ветробранско стакло', description: tr('Замена на оштетено ветробранско стакло со правилна монтажа.', 'Zëvendësim i xhamit të dëmtuar me montim profesional.', 'Replacement of damaged windshields with professional installation.') },
     { title: tr('Репарација на шофершајбна', 'Riparim i xhamit të përparmë', 'Windshield repair'), href: '/reparacija-avtostakla', image: phase25RepairImage, alt: 'Техничар врши поправка на автомобилско ветробранско стакло', description: tr('Репарација на оштетувања и мали пукнатини на ветробранско стакло.', 'Riparim i dëmtimeve dhe çarjeve të vogla në xhamin e përparmë.', 'Repair of chips and small cracks in windshields.') },
-    { title: tr('Фолии за домови и објекти', 'Filma për shtëpi dhe objekte', 'Films for homes and buildings'), href: '/folii-za-domovi-i-objekti', image: 'https://images.pexels.com/photos/27985107/pexels-photo-27985107.jpeg?cs=srgb&dl=pexels-jan-van-der-wolf-11680885-27985107.jpg&fm=jpg', alt: 'Модерна стаклена фасада на објект', description: tr('ТЕРМО ИЗОЛАЦИЈА, контрола на сончевата топлина, приватност и декоративни решенија за стакло.', 'IZOLIM TERMIK, kontroll i nxehtësisë diellore, privatësi dhe zgjidhje dekorative për xham.', 'THERMAL INSULATION, solar heat control, privacy and decorative glass solutions.') },
+    { title: tr('Фолии за домови и објекти', 'Filma për shtëpi dhe objekte', 'Films for homes and buildings'), href: '/folii-za-domovi-i-objekti', image: 'https://images.pexels.com/photos/27985107/pexels-photo-27985107.jpeg?cs=srgb&dl=pexels-jan-van-der-wolf-11680885-27985107.jpg&fm=jpg', alt: 'Модерна стаклена фасада на објект', description: tr('Сончева, топлинска и декоративна заштита за домови и деловни објекти.', 'Mbrojtje nga dielli, nxehtësia dhe dekorim për shtëpi e objekte.', 'Solar, heat and decorative films for homes and commercial buildings.') },
+    { title: tr('Фолија за туш кабини – Anti Limescale', 'Film për kabina dushi – Anti Limescale', 'Shower enclosure film – Anti Limescale'), href: '/folija-za-tus-kabini', image: siteContent.showerFilmImage || DEFAULT_SITE_CONTENT.showerFilmImage, alt: 'Стаклена туш кабина со заштитна фолија', description: tr('Заштита на стаклото и полесно одржување со соодветна фолија против наслаги.', 'Mbrojtje e xhamit dhe mirëmbajtje më e lehtë me film kundër depozitave.', 'Glass protection and easier maintenance with a suitable anti-limescale film.') },
     { title: 'Car Wrap · ' + tr('Промена на боја', 'Ndryshim i ngjyrës', 'Colour change'), href: '/wrap', image: 'https://images.pexels.com/photos/10162528/pexels-photo-10162528.jpeg?cs=srgb&dl=pexels-autorecords-10162528.jpg&fm=jpg', alt: 'Монтажа на винил фолија за промена на боја на автомобил', description: tr('Целосна и делумна промена на боја со винилни фолии.', 'Ndryshim i plotë ose i pjesshëm i ngjyrës me filma vinili.', 'Full or partial colour changes using premium vinyl films.') },
     { title: 'PPF · ' + tr('Заштита на бојата', 'Mbrojtje e bojës', 'Paint protection'), href: '/ppf-zastita', image: 'https://images.pexels.com/photos/36021355/pexels-photo-36021355.jpeg?cs=srgb&dl=pexels-tejas-jr-528833302-36021355.jpg&fm=jpg', alt: 'Монтажа на PPF заштитна фолија на автомобил', description: tr('Транспарентна заштита на лакот од гребнатини и секојдневно оштетување.', 'Mbrojtje transparente e bojës nga gërvishtjet dhe dëmtimet e përditshme.', 'Transparent paint protection against scratches and everyday damage.') },
   ];
@@ -293,14 +294,14 @@ export default function App() {
           id: 'home-ppf-protection', eyebrow: 'TINTOLOGY · PPF ЗАШТИТА',
           title: tr('Заштити го оригиналниот изглед на бојата', 'Mbroni pamjen origjinale të bojës', 'Protect the original paint finish'),
           description: tr('PPF создава дополнителен транспарентен слој врз автомобилскиот лак. Помага да се намали ризикот од ситни камчиња, лесни гребнатини и секојдневно абење на најизложените делови.', 'PPF krijon një shtresë shtesë transparente mbi bojën e automjetit. Ndihmon në uljen e rrezikut nga gurëzat, gërvishtjet e lehta dhe konsumimi i përditshëm në pjesët më të ekspozuara.', 'PPF adds a transparent layer over automotive paint, helping reduce the risk of stone chips, light scratches and everyday wear on exposed areas.'),
-          href: '/ppf-zastita', image: serviceMenuItems[5].image, alt: serviceMenuItems[5].alt,
+          href: '/ppf-zastita', image: serviceMenuItems[6].image, alt: serviceMenuItems[6].alt,
           points: [tr('Заштита на избрани панели или поголеми зони','Mbrojtje e paneleve ose zonave më të mëdha','Protection for selected panels or larger areas'), tr('Транспарентен финиш','Përfundim transparent','Transparent finish')]
         },
         {
           id: 'home-car-wrap', eyebrow: 'TINTOLOGY · CAR WRAP',
           title: tr('Промени го изгледот. Зачувај го карактерот.', 'Ndrysho pamjen. Ruaj karakterin.', 'Change the look. Keep the character.'),
           description: tr('Со винилна фолија можеш да му дадеш нов изглед на автомобилот — од целосна промена на боја до внимателно избрани детали. Разгледај различни бои и финиши пред да ја донесеш одлуката.', 'Me film vinili mund t’i japësh automjetit pamje të re — nga ndryshimi i plotë i ngjyrës deri te detajet e zgjedhura. Shiko ngjyra dhe përfundime të ndryshme para vendimit.', 'Vinyl film gives your vehicle a new look, from a full colour change to carefully selected details. Explore colours and finishes before deciding.'),
-          href: '/wrap', image: serviceMenuItems[4].image, alt: serviceMenuItems[4].alt,
+          href: '/wrap', image: serviceMenuItems[5].image, alt: serviceMenuItems[5].alt,
           points: [tr('Целосна или делумна промена на боја','Ndryshim i plotë ose i pjesshëm i ngjyrës','Full or partial colour change'), tr('Избор на бои и финиши','Zgjedhje e ngjyrave dhe përfundimeve','Choice of colours and finishes')]
         }
   ];
@@ -333,7 +334,6 @@ export default function App() {
           <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-200">
             <a href="#about" className="hover:text-blue-400 transition-colors whitespace-nowrap">За Нас</a>
             <a href="#services" className="hover:text-blue-400 transition-colors whitespace-nowrap">Услуги</a>
-            <button type="button" onClick={() => setIsPriceListOpen(true)} className="hover:text-blue-400 transition-colors whitespace-nowrap">Ценовник</button>
             <a href="#contact" className="hover:text-blue-400 transition-colors whitespace-nowrap">Контакт</a>
           </nav>
 
@@ -385,7 +385,6 @@ export default function App() {
             <div className="flex flex-col space-y-3 text-base font-medium text-slate-200">
               <a href="#about" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-400 transition-colors">За Нас</a>
               <a href="#services" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-400 transition-colors">Услуги</a>
-              <button type="button" onClick={() => { setMobileMenuOpen(false); setIsPriceListOpen(true); }} className="py-1 text-left hover:text-blue-400 transition-colors">Ценовник</button>
               <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-400 transition-colors">Контакт</a>
             </div>
             <div className="pt-3 border-t border-[#1e1e28] flex flex-col gap-2.5">
@@ -426,7 +425,7 @@ export default function App() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-3xl">
             <div className="mb-3 text-xs font-bold uppercase tracking-[.22em] text-blue-300">TINTOLOGY · ЗА НАС</div>
-            <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Секој детаљ. Совршен финиш.</h2>
+            <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Професионална грижа за секое возило.</h2>
             <p className="mt-4 text-base leading-relaxed text-slate-300">Tintology нуди професионално затемнување на автомобилски стакла, репарација и замена на автостакла, како и автомобилски Wrap и заштитни фолии. Работиме со внимание на деталите, квалитетни материјали и прецизна монтажа.</p>
           </div>
         </div>
@@ -498,24 +497,33 @@ export default function App() {
             <div>
               <div className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-blue-400">TINTOLOGY · ЗА ДОМОВИ И ОБЈЕКТИ</div>
               <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">{tr('Фолии за домови и објекти', 'Filma për shtëpi dhe objekte', 'Films for homes and buildings')}</h2>
-              <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-400">{tr('ТЕРМО ИЗОЛАЦИЈА, контрола на сончевата топлина, приватност и декоративен изглед на стаклените површини.', 'IZOLIM TERMIK, kontroll i nxehtësisë diellore, privatësi, mbrojtje dhe pamje dekorative të sipërfaqeve prej xhami.', 'THERMAL INSULATION, solar heat control, privacy, protection and decorative glass finishes.')}</p>
+              <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-400">{tr('Решенија за контрола на сончевата топлина, приватност, заштита и декоративен изглед на стаклените површини.', 'Zgjidhje për kontrollin e nxehtësisë diellore, privatësi, mbrojtje dhe pamje dekorative të sipërfaqeve prej xhami.', 'Solutions for solar heat control, privacy, protection and decorative glass finishes.')}</p>
               <a href="/folii-za-domovi-i-objekti" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-bold text-[#07111d] transition hover:bg-blue-400">{tr('Истражи ги решенијата', 'Eksploro zgjidhjet', 'Explore solutions')} <ChevronRight className="h-4 w-4"/></a>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               {[
-                { title: tr('Фолии за прозорци и стаклени површини','Filma për dritare dhe sipërfaqe xhami','Window and glass-surface films'), description: tr('Контрола на сонце и подобар внатрешен комфор.','Kontroll i diellit dhe rehati më e mirë.','Solar control and improved indoor comfort.'), image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=85', alt: 'Големи стаклени прозорци во модерен простор', href: '/folii-za-domovi-i-objekti#architectural-windows' },
-                { title: tr('Декоративни и мат фолии','Filma dekorativë dhe mat','Decorative and frosted films'), description: tr('Дискретен изглед и визуелно зонирање.','Pamje diskrete dhe ndarje vizuale.','Discreet finishes and visual zoning.'), image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85', alt: 'Светол ентериер со мат стаклени прегради', href: '/folii-za-domovi-i-objekti#architectural-decorative' },
-                { title: tr('Фолии за приватност','Filma privatësie','Privacy films'), description: tr('Повеќе приватност за домови и деловни простории.','Më shumë privatësi për shtëpi dhe zyra.','More privacy for homes and workplaces.'), image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=85', alt: 'Канцелариски стаклени прегради', href: '/folii-za-domovi-i-objekti#architectural-privacy' },
-                { title: tr('Фолии за туш кабини','Filma për kabina dushi','Shower enclosure films'), description: tr('Полесно одржување и заштита на стаклото.','Mirëmbajtje më e lehtë dhe mbrojtje e xhamit.','Easier care and added glass protection.'), image: siteContent.showerFilmImage || DEFAULT_SITE_CONTENT.showerFilmImage, alt: 'Стаклена туш кабина', href: '/folii-za-domovi-i-objekti#architectural-shower' },
-                { title: tr('Фолии за канцеларии и деловни простории','Filma për zyra dhe ambiente biznesi','Office and commercial-space films'), description: tr('Решенија за прегради, излози и работни простории.','Zgjidhje për ndarje, vitrina dhe zyra.','Solutions for partitions, shopfronts and workspaces.'), image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=85', alt: 'Модерна канцеларија со стаклени површини', href: '/folii-za-domovi-i-objekti#architectural-offices' },
-                { title: tr('Фолии за заштита од сонце и топлина','Filma për mbrojtje nga dielli dhe nxehtësia','Solar and heat-control films'), description: tr('ТЕРМО ИЗОЛАЦИЈА и намалување на сончевото оптоварување.','IZOLIM TERMIK dhe ulje e ngarkesës diellore.','THERMAL INSULATION and reduced solar heat load.'), image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=85', alt: 'Стаклена фасада на деловен објект', href: '/folii-za-domovi-i-objekti#architectural-solar' },
-              ].map((item) => <a key={item.title} href={item.href} className="group relative min-h-40 overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] sm:min-h-48">
+                { title: tr('Куќи и станбени објекти','Shtëpi dhe objekte banimi','Homes and residential buildings'), image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=85', alt: 'Модерна куќа со големи стаклени прозорци', href: '/folii-za-domovi-i-objekti#architectural-solar' },
+                { title: tr('Стаклени фасади','Fasada xhami','Glass facades'), image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=85', alt: 'Современа зграда со стаклена фасада', href: '/folii-za-domovi-i-objekti#architectural-privacy' },
+                { title: tr('Кровни прозорци','Dritare çatie','Roof windows'), image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85', alt: 'Светол поткровен простор со кровни прозорци', href: '/folii-za-domovi-i-objekti#architectural-safety' },
+                { title: tr('Стаклени покриви','Çati xhami','Glass roofs'), image: 'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=900&q=85', alt: 'Архитектура со стаклен покрив и природна светлина', href: '/folii-za-domovi-i-objekti#architectural-decorative' },
+              ].map((item) => <a key={item.title} href={item.href} className="group relative min-h-36 overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] sm:min-h-44">
                 <img src={item.image} alt={item.alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050a12]/95 via-[#050a12]/25 to-transparent" />
-                <span className="absolute bottom-0 left-0 right-0 p-3 sm:p-4"><span className="block text-sm font-bold text-white">{item.title}<ChevronRight className="ml-1 inline h-4 w-4 text-blue-300 transition-transform group-hover:translate-x-1"/></span><span className="mt-1 block text-[11px] leading-relaxed text-slate-200/90">{item.description}</span></span>
+                <span className="absolute bottom-0 left-0 right-0 p-3 text-sm font-bold text-white sm:p-4">{item.title}<ChevronRight className="ml-1 inline h-4 w-4 text-blue-300 transition-transform group-hover:translate-x-1"/></span>
               </a>)}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section id="home-shower-film" className="border-t border-[#1c1c28] bg-[#090d14] py-16">
+        <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-[.9fr_1.1fr] lg:items-center lg:px-8">
+          <div><div className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-blue-400">TINTOLOGY · BATHROOM GLASS</div>
+            <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">{tr('Фолија за туш кабини – заштита од бигор', 'Film për kabina dushi – mbrojtje kundër gëlqeres', 'Shower enclosure film – anti-limescale protection')}</h2>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-400">{tr('Специјална фолија за стакло на туш кабини, наменета да го олесни чистењето и да го намали задржувањето на капки и наслаги. Ефектот зависи од конкретниот производ и правилното одржување.', 'Film i posaçëm për xhamin e kabinave të dushit, i projektuar për të lehtësuar pastrimin dhe për të zvogëluar mbetjen e pikave dhe depozitave. Efekti varet nga produkti dhe mirëmbajtja.', 'Specialist film for shower glass, designed to make cleaning easier and reduce water spotting and deposits. Results depend on the specific product and correct care.')}</p>
+            <a href="/folija-za-tus-kabini" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-bold text-[#07111d] transition hover:bg-blue-400">{tr('Повеќе информации', 'Më shumë informacion', 'More information')} <ChevronRight className="h-4 w-4"/></a>
+          </div>
+          <a href="/folija-za-tus-kabini" className="group relative block min-h-[280px] overflow-hidden rounded-2xl border border-[#263548] bg-[#111a27] sm:min-h-[360px]"><img src={siteContent.showerFilmImage || DEFAULT_SITE_CONTENT.showerFilmImage} alt="Стаклена туш кабина со заштитна фолија" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-[#050a12]/80 via-transparent to-transparent"/><span className="absolute bottom-5 left-5 rounded-lg border border-white/20 bg-black/35 px-3 py-2 text-sm font-bold text-white">Anti Limescale · Shower Glass</span></a>
         </div>
       </section>
 
