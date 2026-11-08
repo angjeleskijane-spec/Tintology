@@ -439,7 +439,7 @@ export default function App() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-3xl">
             <div className="mb-3 text-xs font-bold uppercase tracking-[.22em] text-blue-300">TINTOLOGY · ЗА НАС</div>
-            <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Професионална грижа за секое возило.</h2>
+            <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{tr('Детална грижа за секое возило.', 'Kujdes i detajuar për çdo automjet.', 'Detailed care for every vehicle.')}</h2>
             <p className="mt-4 text-base leading-relaxed text-slate-300">Tintology нуди професионално затемнување на автомобилски стакла, репарација и замена на автостакла, како и автомобилски Wrap и заштитни фолии. Работиме со внимание на деталите, квалитетни материјали и прецизна монтажа.</p>
           </div>
         </div>
