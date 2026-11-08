@@ -326,7 +326,7 @@ export default function App() {
                 Tintology<span className="text-blue-400">.</span>
               </span>
               <span className="text-[10px] uppercase tracking-wider text-slate-400 font-medium">
-                {tr('Професионални фолии и заштита', 'Filma dhe mbrojtje profesionale', 'Professional films & protection')}
+                {tr('Авто стакла и фолии', 'Xhama dhe filma automjetesh', 'Auto glass & films')}
               </span>
             </div>
           </a>
