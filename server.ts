@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '12mb' }));
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || '';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
@@ -24,6 +24,20 @@ const DEFAULT_CONTENT = {
   heroTitle: 'Заштити го ентериерот. Намали ја топлината. Уживај во комфорот.',
   heroSubtitle: 'Заштита од сонце, повеќе приватност и елегантен изглед со професионални автомобилски фолии и заштитни услуги. Гаранциските услови се потврдуваат според избраната фолија.',
   phone: '079 315 600', location: 'Осој, Кичево, Северна Македонија', hours: 'Секој ден: 09:00 – 21:00',
+  tintPriceList: [
+    { id: 'xpel-xr-rear', title: 'XPEL XR – заден дел', description: 'Премиум керамичка фолија за задниот дел на автомобилот.', price: 6000, warranty: '15 години писмена гаранција', group: 'Затемнување стакла', order: 1 },
+    { id: 'xpel-cs-rear', title: 'XPEL CS – заден дел', description: 'Квалитетна фолија за затемнување и секојдневна заштита.', price: 4000, warranty: '10 години писмена гаранција', group: 'Затемнување стакла', order: 2 },
+    { id: 'windshield-xr88', title: 'Предно ветробранско – XR88', description: 'Транспарентна фолија за предно ветробранско стакло.', price: 3000, warranty: 'Според условите на производителот', group: 'Предно ветробранско', order: 3 },
+    { id: 'windshield-chameleon', title: 'Предно ветробранско – Chameleon', description: 'Chameleon фолија за предно ветробранско стакло.', price: 5000, warranty: 'Според условите на производителот', group: 'Предно ветробранско', order: 4 },
+    { id: 'remove-front', title: 'Отстранување – предни две стакла', description: 'Отстранување на стара фолија од возачко и совозачко стакло.', price: 400, warranty: '—', group: 'Отстранување фолија', order: 5 },
+    { id: 'remove-windshield', title: 'Отстранување – предно ветробранско', description: 'Отстранување на стара фолија од ветробранското стакло.', price: 500, warranty: '—', group: 'Отстранување фолија', order: 6 },
+    { id: 'remove-rear', title: 'Отстранување – заден дел', description: 'Отстранување на стара фолија од задниот дел на автомобилот.', price: 800, warranty: '—', group: 'Отстранување фолија', order: 7 },
+    { id: 'remove-all', title: 'Отстранување – сите стакла', description: 'Отстранување на стара фолија од сите стакла на автомобилот.', price: 1200, warranty: '—', group: 'Отстранување фолија', order: 8 },
+  ],
+  tintingSectionImage: '',
+  glassReplacementImage: 'https://images.pexels.com/photos/11950154/pexels-photo-11950154.jpeg?cs=srgb&dl=pexels-uk-car-glass-222332278-11950154.jpg&fm=jpg',
+  glassRepairImage: '',
+  showerFilmImage: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=85',
   prices: {
     all: { standard: [5500, 5500, 7500, 9500], lux: [8000, 8000, 11000, 14000] },
     rear: { standard: [4000, 4000, 5500, 7000], lux: [6000, 6000, 7500, 9500] },
@@ -107,8 +121,16 @@ function isAdmin(req: express.Request) {
   return true;
 }
 async function readContent() {
-  try { return { ...DEFAULT_CONTENT, ...JSON.parse(await readFile(CONTENT_PATH, 'utf8')) }; }
-  catch { return DEFAULT_CONTENT; }
+  try {
+    const saved = JSON.parse(await readFile(CONTENT_PATH, 'utf8'));
+    return { ...DEFAULT_CONTENT, ...saved,
+      tintPriceList: Array.isArray(saved.tintPriceList) ? saved.tintPriceList : DEFAULT_CONTENT.tintPriceList,
+      tintingSectionImage: saved.tintingSectionImage || DEFAULT_CONTENT.tintingSectionImage,
+      glassReplacementImage: saved.glassReplacementImage || DEFAULT_CONTENT.glassReplacementImage,
+      glassRepairImage: saved.glassRepairImage || DEFAULT_CONTENT.glassRepairImage,
+      showerFilmImage: saved.showerFilmImage || DEFAULT_CONTENT.showerFilmImage,
+    };
+  } catch { return DEFAULT_CONTENT; }
 }
 function validateContent(input: any) {
   if (!input || typeof input !== 'object') return null;
@@ -130,8 +152,28 @@ function validateContent(input: any) {
     },
     wrap: Array.isArray(input.studioPrices?.wrap) && input.studioPrices.wrap.length === 4 && input.studioPrices.wrap.every((v: any) => Number.isInteger(v) && v >= 0 && v <= 1000000) ? input.studioPrices.wrap : DEFAULT_CONTENT.studioPrices.wrap,
   };
-  return { heroTitle: str(input.heroTitle, DEFAULT_CONTENT.heroTitle), heroSubtitle: str(input.heroSubtitle, DEFAULT_CONTENT.heroSubtitle), phone: str(input.phone, DEFAULT_CONTENT.phone), location: str(input.location, DEFAULT_CONTENT.location), hours: str(input.hours, DEFAULT_CONTENT.hours), prices, studioPrices };
+  const fallbackImages = { tintingSectionImage: DEFAULT_CONTENT.tintingSectionImage, glassReplacementImage: DEFAULT_CONTENT.glassReplacementImage, glassRepairImage: DEFAULT_CONTENT.glassRepairImage, showerFilmImage: DEFAULT_CONTENT.showerFilmImage };
+  const imageFields: any = {};
+  for (const key of Object.keys(fallbackImages)) imageFields[key] = typeof input[key] === 'string' && input[key].length <= 2000 ? input[key] : (fallbackImages as any)[key];
+  const tintPriceList = Array.isArray(input.tintPriceList) && input.tintPriceList.length <= 80 ? input.tintPriceList.map((item: any, index: number) => ({ id: String(item.id || 'price-' + index).slice(0, 80), title: str(item.title, 'Услуга'), description: str(item.description, ''), price: Number.isInteger(item.price) && item.price >= 0 && item.price <= 1000000 ? item.price : 0, warranty: str(item.warranty, '—'), group: str(item.group, 'Друго'), order: Number.isInteger(item.order) ? item.order : index + 1 })).filter((item: any) => /^[a-z0-9-]+$/i.test(item.id)) : DEFAULT_CONTENT.tintPriceList;
+  return { heroTitle: str(input.heroTitle, DEFAULT_CONTENT.heroTitle), heroSubtitle: str(input.heroSubtitle, DEFAULT_CONTENT.heroSubtitle), phone: str(input.phone, DEFAULT_CONTENT.phone), location: str(input.location, DEFAULT_CONTENT.location), hours: str(input.hours, DEFAULT_CONTENT.hours), tintPriceList, ...imageFields, prices, studioPrices };
 }
+
+
+app.post('/api/admin/upload-image', async (req, res) => {
+  if (!isAdmin(req)) return res.status(401).json({ error: 'Потребна е најава.' });
+  const { dataUrl } = req.body || {};
+  const match = typeof dataUrl === 'string' ? dataUrl.match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=]+)$/) : null;
+  if (!match) return res.status(400).json({ error: 'Дозволени се само PNG, JPG и WEBP слики.' });
+  const buffer = Buffer.from(match[2], 'base64');
+  if (!buffer.length || buffer.length > 8 * 1024 * 1024) return res.status(413).json({ error: 'Сликата мора да биде помала од 8 MB.' });
+  const extension = match[1] === 'jpeg' ? 'jpg' : match[1];
+  const filename = `tintology-${Date.now()}-${randomBytes(5).toString('hex')}.${extension}`;
+  const uploadDir = process.env.NODE_ENV === 'production' ? path.join(process.cwd(), 'dist', 'uploads') : path.join(process.cwd(), 'public', 'uploads');
+  await mkdir(uploadDir, { recursive: true });
+  await writeFile(path.join(uploadDir, filename), buffer);
+  res.json({ url: `/uploads/${filename}` });
+});
 
 app.get('/api/admin/session', (req, res) => res.json({ authenticated: isAdmin(req) }));
 app.post('/api/admin/login', (req, res) => {
