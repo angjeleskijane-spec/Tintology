@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Film, Palette, RotateCcw, AlertCircle, ExternalLink, Sparkles } from 'lucide-react';
+import { Film, Palette, RotateCcw, AlertCircle, ExternalLink, Sparkles, Maximize2, Minimize2 } from 'lucide-react';
 import type { SiteContent } from './siteContent';
 import { WRAP_PRODUCTS, WRAP_BRAND_ORDER } from './ProductCatalog';
 
@@ -52,7 +52,7 @@ const CAR_MODELS: CarModel[] = APPROVED_CAR_MODEL_ORDER.flatMap((id) =>
   ARCHIVED_CAR_MODELS.filter((car) => car.id === id),
 );
 
-const VLT_OPTIONS = [30, 50, 65, 85, 95];
+const VLT_OPTIONS = [12, 50, 65, 85, 95];
 const WRAP_FINISHES = [
   { id: 'gloss', label: 'Gloss / Сјај', roughness: 0.18, metalness: 0.18 },
   { id: 'highGloss', label: 'High Gloss / Висок сјај', roughness: 0.08, metalness: 0.16 },
@@ -164,8 +164,9 @@ function setMaterialTint(original: SketchfabMaterial, color: string, options: { 
 function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt' | 'xr88' | 'chameleon' = 'vlt', options: { applyOpacity?: boolean; blendOverride?: number; calibration?: 'audi-a4' | 'nissan-gtr' | 'mercedes-g63' | 'vw-golf-gti-mk2' | 'audi-rs6-avant' | 'vw-passat-pro-2025' } = {}) {
   // Simulator darkness scale (not physical VLT). The approved user-facing
   // stops are intentionally nonlinear so each step is visibly darker.
-  // The five customer-facing tint stops run from light (30% total tint) to darkest (95%).
+  // The five customer-facing tint stops run from light (12% total tint) to darkest (95%).
   const standardStops: Record<number, { color: string; opacity: number; blend: number }> = {
+    12: { color: '#C2CBD3', opacity: 0.16, blend: 0.10 },
     30: { color: '#929DA7', opacity: 0.28, blend: 0.18 },
     50: { color: '#59636D', opacity: 0.40, blend: 0.30 },
     65: { color: '#343E48', opacity: 0.50, blend: 0.40 },
@@ -174,6 +175,7 @@ function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt'
   };
   // Audi A4 (B5): retain its proven calibrated appearance while mapping it to the new five stops.
   const audiStops: Record<number, { color: string; opacity: number; blend: number }> = {
+    12: { color: '#2A3037', opacity: 0.24, blend: 0.78 },
     30: { color: '#171B20', opacity: 0.34, blend: 0.86 },
     50: { color: '#080B0F', opacity: 0.44, blend: 0.90 },
     65: { color: '#020305', opacity: 0.62, blend: 0.94 },
@@ -183,6 +185,7 @@ function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt'
   // Nissan GT-R: neutralize the original pale/white plastic-looking glazing.
   // Keep the original maps, but use a charcoal glass base and lower roughness.
   const nissanStops: Record<number, { color: string; opacity: number; blend: number }> = {
+    12: { color: '#77838E', opacity: 0.22, blend: 0.60 },
     30: { color: '#56616B', opacity: 0.30, blend: 0.72 },
     50: { color: '#252D35', opacity: 0.38, blend: 0.88 },
     65: { color: '#111820', opacity: 0.52, blend: 0.92 },
@@ -192,6 +195,7 @@ function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt'
   // Mercedes-Benz G-Class: its former 95% appearance is the new 65% reference.
   // The former 65/85/95 visual stops are shifted to 30/50/65; 85/95 extend darker.
   const mercedesG63Stops: Record<number, { color: string; opacity: number; blend: number }> = {
+    12: { color: '#C2CBD3', opacity: 0.16, blend: 0.10 },
     30: { color: '#343E48', opacity: 0.50, blend: 0.40 },
     50: { color: '#070B10', opacity: 0.82, blend: 0.68 },
     65: { color: '#000000', opacity: 0.92, blend: 0.78 },
@@ -203,6 +207,7 @@ function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt'
   // Lighter stops reuse the corresponding former lighter appearances, while
   // the final 95% stop extends darker than the new reference.
   const sixtyFiveAnchorStops: Record<number, { color: string; opacity: number; blend: number }> = {
+    12: { color: '#C2CBD3', opacity: 0.16, blend: 0.10 },
     30: { color: '#343E48', opacity: 0.50, blend: 0.40 },
     50: { color: '#070B10', opacity: 0.82, blend: 0.68 },
     65: { color: '#000000', opacity: 0.92, blend: 0.78 },
@@ -210,6 +215,7 @@ function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt'
     95: { color: '#000000', opacity: 0.99, blend: 0.94 },
   };
   const eightyFiveAnchorStops: Record<number, { color: string; opacity: number; blend: number }> = {
+    12: { color: '#C2CBD3', opacity: 0.16, blend: 0.10 },
     30: { color: '#929DA7', opacity: 0.28, blend: 0.18 },
     50: { color: '#59636D', opacity: 0.40, blend: 0.30 },
     65: { color: '#070B10', opacity: 0.82, blend: 0.68 },
@@ -226,7 +232,7 @@ function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt'
     : options.calibration === 'nissan-gtr' ? nissanStops
     : options.calibration === 'audi-a4' ? audiStops : standardStops;
   const levels = Object.keys(stops).map(Number).sort((a, b) => a - b);
-  const value = Math.max(30, Math.min(95, darkness));
+  const value = Math.max(12, Math.min(95, darkness));
   let lower = levels[0], upper = levels[levels.length - 1];
   for (let i = 0; i < levels.length - 1; i++) {
     if (value >= levels[i] && value <= levels[i + 1]) { lower = levels[i]; upper = levels[i + 1]; break; }
@@ -237,12 +243,12 @@ function tintMaterial(original: SketchfabMaterial, darkness: number, film: 'vlt'
   const a = hexToRgb(stops[lower].color), b = hexToRgb(stops[upper].color);
   const color = `#${a.map((v, i) => Math.round(mix(v, b[i])).toString(16).padStart(2, '0')).join('')}`;
   const opacity = mix(stops[lower].opacity, stops[upper].opacity);
-  const audiBlendStops: Record<number, number> = { 30: 0.18, 50: 0.86, 65: 0.90, 85: 0.94, 95: 0.96 };
+  const audiBlendStops: Record<number, number> = { 12: 0.10, 30: 0.18, 50: 0.86, 65: 0.90, 85: 0.94, 95: 0.96 };
   const audiBlend = mix(audiBlendStops[lower], audiBlendStops[upper]);
   const calibratedBlend = mix(stops[lower].blend, stops[upper].blend);
   const tint = film === 'chameleon' ? '#7187b8' : film === 'xr88' ? '#c5d0da' : color;
   return setMaterialTint(original, tint, {
-    blend: options.blendOverride ?? ((options.calibration === 'nissan-gtr' || options.calibration === 'mercedes-g63' || options.calibration === 'vw-golf-gti-mk2' || options.calibration === 'audi-rs6-avant' || options.calibration === 'vw-passat-pro-2025') ? calibratedBlend : options.calibration === 'audi-a4' ? audiBlend : film === 'chameleon' ? 0.42 : film === 'xr88' ? 0.32 : ({ 30: 0.18, 50: 0.30, 65: 0.40, 85: 0.68, 95: 0.78 } as Record<number, number>)[Math.round(value)] ?? 0.42),
+    blend: options.blendOverride ?? ((options.calibration === 'nissan-gtr' || options.calibration === 'mercedes-g63' || options.calibration === 'vw-golf-gti-mk2' || options.calibration === 'audi-rs6-avant' || options.calibration === 'vw-passat-pro-2025') ? calibratedBlend : options.calibration === 'audi-a4' ? audiBlend : film === 'chameleon' ? 0.42 : film === 'xr88' ? 0.32 : ({ 12: 0.10, 30: 0.18, 50: 0.30, 65: 0.40, 85: 0.68, 95: 0.78 } as Record<number, number>)[Math.round(value)] ?? 0.42),
     // Keep glazing glossy and non-metallic to avoid a pale, plastic haze.
     roughness: options.calibration === 'nissan-gtr' ? 0.06 : options.calibration === 'audi-a4' ? 0.12 : undefined,
     metalness: (options.calibration === 'audi-a4' || options.calibration === 'nissan-gtr') ? 0 : undefined,
@@ -324,6 +330,19 @@ export default function CarStudio({ content, onBook }: Props) {
   const applyWrapVariant = (id: string) => { const product = WRAP_PRODUCTS.find((p) => p.id === id); setSelectedWrapId(id); const f = (product?.finish || '').toLowerCase(); setWrapFinish(f.includes('satin') ? 'satin' : f.includes('matte') ? 'matte' : f.includes('metallic') ? 'metallic' : f.includes('texture') || f.includes('carbon') ? 'texture' : f.includes('flip') || f.includes('chameleon') ? 'colorflip' : 'gloss'); };
   const [wrapFinish, setWrapFinish] = useState('gloss');
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const studioLayoutRef = useRef<HTMLDivElement | null>(null);
+  const [isStudioFullscreen, setIsStudioFullscreen] = useState(false);
+  useEffect(() => {
+    const syncFullscreen = () => setIsStudioFullscreen(document.fullscreenElement === studioLayoutRef.current);
+    document.addEventListener('fullscreenchange', syncFullscreen);
+    return () => document.removeEventListener('fullscreenchange', syncFullscreen);
+  }, []);
+  const toggleStudioFullscreen = async () => {
+    try {
+      if (document.fullscreenElement === studioLayoutRef.current) await document.exitFullscreen();
+      else await studioLayoutRef.current?.requestFullscreen();
+    } catch (error) { console.error('Tintology simulator fullscreen failed', error); }
+  };
   const apiRef = useRef<SketchfabApi | null>(null);
   const originalMaterialsRef = useRef<SketchfabMaterial[]>([]);
   const materialUpdateRunRef = useRef(0);
@@ -496,18 +515,18 @@ export default function CarStudio({ content, onBook }: Props) {
       <div className="max-w-3xl mb-10">
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-400 mb-2"><Sparkles className="h-4 w-4"/><span>Tintology 3D Car Studio</span></div>
         <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Конфигуратор на автомобили</h2>
-        <p className="mt-3 text-base text-slate-300">Избери автомобил, ротирај го во 3D и испробај Tint и Wrap. Кај затемнувањето, 30% е најсветло, а 95% е најтемно.</p>
+        <p className="mt-3 text-base text-slate-300">Избери автомобил, ротирај го во 3D и испробај Tint и Wrap. Кај затемнувањето, 12% е најсветло, а 95% е најтемно.</p>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        <div className="lg:col-span-7 rounded-2xl bg-[#12121a] border border-[#232332] p-4 sm:p-6">
+      <div ref={studioLayoutRef} className={`grid grid-cols-1 lg:grid-cols-12 gap-6 items-start ${isStudioFullscreen ? 'bg-[#080d15] p-4 sm:p-6 overflow-y-auto' : ''}`} style={isStudioFullscreen ? { width: '100vw', height: '100vh', gridTemplateColumns: 'minmax(0, 1.45fr) minmax(340px, .85fr)', alignItems: 'stretch' } : undefined}>
+        <div className={`${isStudioFullscreen ? 'lg:col-span-1 min-w-0 min-h-0' : 'lg:col-span-7'} rounded-2xl bg-[#12121a] border border-[#232332] p-4 sm:p-6`}>
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <div><div className="text-[10px] uppercase tracking-[.18em] text-slate-500">Избран автомобил</div><div className="text-white font-bold text-lg">{modelName}</div></div>
-            <div className="flex items-center gap-2 rounded-lg border border-blue-900/70 bg-blue-950/40 px-3 py-2 text-xs text-blue-200"><RotateCcw className="h-3.5 w-3.5"/> Влечи за 360° преглед</div>
+            <div className="flex flex-wrap items-center gap-2"><div className="flex items-center gap-2 rounded-lg border border-blue-900/70 bg-blue-950/40 px-3 py-2 text-xs text-blue-200"><RotateCcw className="h-3.5 w-3.5"/> Влечи за 360° преглед</div><button type="button" onClick={toggleStudioFullscreen} className="inline-flex items-center gap-2 rounded-lg border border-blue-400/50 bg-blue-500/10 px-3 py-2 text-xs font-bold text-blue-100 hover:bg-blue-500/20" aria-label={isStudioFullscreen ? 'Излези од цел екран' : 'Отвори во цел екран'}>{isStudioFullscreen ? <Minimize2 className="h-4 w-4"/> : <Maximize2 className="h-4 w-4"/>}{isStudioFullscreen ? 'Излези од Full Screen' : 'Full Screen'}</button></div>
           </div>
-          <div className="relative overflow-hidden rounded-xl border border-[#29384a] bg-gradient-to-b from-[#1a2635] to-[#080d15] aspect-[4/3] sm:aspect-[16/10]">
+          <div className="relative overflow-hidden rounded-xl border border-[#29384a] bg-gradient-to-b from-[#1a2635] to-[#080d15] aspect-[4/3] sm:aspect-[16/10]" style={isStudioFullscreen ? { height: 'calc(100vh - 170px)', minHeight: '420px', aspectRatio: 'auto' } : undefined}>
             {viewerStatus === 'loading' && <div className="absolute inset-0 z-20 grid place-items-center bg-[#0b111b]/90 text-center p-6"><div><div className="mx-auto mb-3 h-8 w-8 rounded-full border-2 border-blue-400 border-t-transparent animate-spin"/><div className="text-white font-semibold">Се вчитува 3D автомобилот...</div><div className="text-xs text-slate-400 mt-1">Првото вчитување може да потрае неколку секунди.</div></div></div>}
             {viewerStatus === 'error' && <div className="absolute inset-0 z-20 grid place-items-center bg-[#0b111b] text-center p-6"><div className="max-w-sm"><AlertCircle className="h-8 w-8 text-amber-400 mx-auto mb-3"/><div className="text-white font-semibold">3D прегледот не е достапен</div><p className="text-xs text-slate-400 mt-2">{viewerError}</p><button type="button" onClick={() => setReloadKey((value) => value + 1)} className="mt-4 rounded-lg bg-blue-500 px-4 py-2 text-sm font-bold text-black">Обиди се повторно</button></div></div>}
-            <iframe key={`${selectedModel.uid}-${reloadKey}`} ref={iframeRef} title={`${modelName} 3D model`} className="absolute inset-0 h-full w-full border-0" allow="autoplay; fullscreen; xr-spatial-tracking" allowFullScreen />
+            <iframe key={`${selectedModel.uid}-${reloadKey}`} ref={iframeRef} title={`${modelName} 3D model`} className="absolute inset-0 h-full w-full border-0" allow="autoplay; xr-spatial-tracking" />
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
             <button type="button" onClick={saveVehicleScreenshot} disabled={viewerStatus !== 'ready' || screenshotBusy} className="rounded-lg border border-blue-500/50 bg-blue-500/10 px-3 py-2 text-xs font-bold text-blue-200 hover:bg-blue-500/20 disabled:cursor-not-allowed disabled:opacity-40">{screenshotBusy ? 'Се подготвува...' : 'Зачувај Screenshot 1920×1080'}</button>
@@ -521,7 +540,12 @@ export default function CarStudio({ content, onBook }: Props) {
           {viewerStatus === 'ready' && <div className="mt-3 text-[10px] text-slate-500">Моделите се вчитуваат од Sketchfab и бараат интернет-врска. Материјалите се менуваат само кога 3D моделот ги изложува како одделни делови.</div>}
         </div>
 
-        <div className="lg:col-span-5 rounded-2xl bg-[#12121a] border border-[#232332] p-4 sm:p-5">
+        <div className={`${isStudioFullscreen ? 'lg:col-span-1 min-w-0 min-h-0' : 'lg:col-span-5'} rounded-2xl bg-[#12121a] border border-[#232332] p-4 sm:p-5`} style={isStudioFullscreen ? { overflowY: 'auto', maxHeight: 'calc(100vh - 48px)' } : undefined}>
+          {isStudioFullscreen && <div className="sticky top-0 z-30 -mx-4 -mt-4 mb-5 border-b border-[#29384a] bg-[#12121a]/95 p-4 backdrop-blur-xl">
+            <div className="mb-3 flex items-center justify-between gap-3"><div><div className="text-[10px] font-bold uppercase tracking-[.2em] text-blue-300">TINTOLOGY 3D STUDIO</div><div className="mt-1 text-sm font-extrabold text-white">Контроли на симулаторот</div></div><span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-emerald-300">Активно</span></div>
+            <div className="grid grid-cols-2 gap-2"><button type="button" onClick={() => setService('windows')} aria-pressed={service === 'windows'} className={`rounded-lg border px-3 py-2.5 text-xs font-extrabold tracking-wider transition-colors ${service === 'windows' ? 'border-blue-400 bg-blue-500 text-slate-950' : 'border-[#354052] bg-[#0c1420] text-slate-300 hover:border-blue-400'}`}><Film className="mr-2 inline h-4 w-4"/>TINT · ЗАТЕМНУВАЊЕ</button><button type="button" onClick={() => setService('wrap')} aria-pressed={service === 'wrap'} className={`rounded-lg border px-3 py-2.5 text-xs font-extrabold tracking-wider transition-colors ${service === 'wrap' ? 'border-blue-400 bg-blue-500 text-slate-950' : 'border-[#354052] bg-[#0c1420] text-slate-300 hover:border-blue-400'}`}><Palette className="mr-2 inline h-4 w-4"/>WRAP · БОЈА</button></div>
+            <p className="mt-2 text-[10px] text-slate-500">Избери режим, па смени ја нијансата или бојата подолу. Двете поставки остануваат достапни.</p>
+          </div>}
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">1. Избери марка и модел</label>
           <select value={selectedModelId} onChange={(e) => { setSelectedModelId(e.target.value); if (['mercedes-g63-2025', 'vw-golf-gti-mk2', 'audi-rs6-avant'].includes(e.target.value)) setGlassVlt(65); else if (e.target.value === 'vw-passat-pro-2025') setGlassVlt(85); }} className="w-full rounded-xl bg-[#181824] border border-[#343449] px-3 py-3 text-sm text-white outline-none focus:border-blue-400 mb-5">
             {CAR_MODELS.map((car) => <option key={car.id} value={car.id}>{car.brand} {car.model}</option>)}
@@ -532,7 +556,7 @@ export default function CarStudio({ content, onBook }: Props) {
             {selectedModelId === 'nissan-gtr' ? (
               <div className="rounded-lg border border-blue-500/40 bg-blue-500/10 px-3 py-3 text-sm font-bold text-blue-100">95% · ФИКСИРАНО ЗАТЕМНУВАЊЕ <p className="mt-1 text-[10px] font-normal text-slate-400">Кај Nissan GT-R R35 затемнувањето е фиксирано. Wrap останува достапен.</p></div>
             ) : (
-              <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Затемнување стакла</label><div className="grid grid-cols-5 gap-2">{VLT_OPTIONS.map((value) => { const active = glassVlt === value; return <button key={value} type="button" onClick={() => setGlassVlt(value)} className={`rounded-lg border py-3 text-sm font-extrabold ${active ? 'border-blue-400 bg-blue-400 text-black' : 'border-[#303044] bg-[#181824] text-slate-300'}`}>{value}%</button>; })}</div><p className="mt-2 text-[10px] text-slate-500">30% е најсветла нијанса, а 95% е најтемна. Затемнувањето се применува само на страничните и задните стакла.</p></div>
+              <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Затемнување стакла</label><div className="grid grid-cols-5 gap-2">{VLT_OPTIONS.map((value) => { const active = glassVlt === value; return <button key={value} type="button" onClick={() => setGlassVlt(value)} className={`rounded-lg border py-3 text-sm font-extrabold ${active ? 'border-blue-400 bg-blue-400 text-black' : 'border-[#303044] bg-[#181824] text-slate-300'}`}>{value}%</button>; })}</div><p className="mt-2 text-[10px] text-slate-500">12% е најсветла нијанса, а 95% е најтемна. Затемнувањето се применува само на страничните и задните стакла.</p></div>
             )}
           </div>
 
