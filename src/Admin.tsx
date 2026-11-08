@@ -158,7 +158,12 @@ export default function Admin() {
     <div className="mx-auto max-w-5xl">
       <header className="flex items-center justify-between border-b border-slate-800 pb-5 mb-8">
         <div><div className="text-blue-400 text-xs font-bold tracking-[.25em]">TINTOLOGY</div><h1 className="text-2xl sm:text-3xl font-extrabold mt-1">Администраторски панел</h1></div>
-        {authenticated && <button onClick={logout} className="rounded-lg border border-slate-700 px-4 py-2 text-sm hover:bg-slate-800">Одјави се</button>}
+        <div className="flex items-center gap-3">
+          <a href="/git" className="rounded-lg bg-red-600/20 text-red-400 border border-red-500/30 px-3.5 py-2 text-xs font-semibold hover:bg-red-600/30 transition flex items-center gap-1.5">
+            <span>Git Студио (Push / Fetch)</span>
+          </a>
+          {authenticated && <button onClick={logout} className="rounded-lg border border-slate-700 px-4 py-2 text-sm hover:bg-slate-800">Одјави се</button>}
+        </div>
       </header>
       {!authenticated ? <form onSubmit={login} className="max-w-md mx-auto rounded-2xl border border-slate-800 bg-[#11131b] p-6 sm:p-8">
         <h2 className="text-xl font-bold mb-2">Најава</h2><p className="text-sm text-slate-400 mb-6">Внеси ги администраторските податоци.</p>

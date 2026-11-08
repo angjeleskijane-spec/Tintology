@@ -34,7 +34,8 @@ import {
   ThumbsUp,
   Instagram,
   Facebook,
-  Building2
+  Building2,
+  FolderGit2
 } from 'lucide-react';
 
 import tintologyLogo from './assets/images/tintology-owl-metallic.png';
@@ -331,10 +332,18 @@ export default function App() {
           </a>
 
           {/* Zone 2: Navigation Links (Macedonian) */}
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-200">
+          <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-200">
             <a href="#about" className="hover:text-blue-400 transition-colors whitespace-nowrap">За Нас</a>
             <a href="#services" className="hover:text-blue-400 transition-colors whitespace-nowrap">Услуги</a>
             <a href="#contact" className="hover:text-blue-400 transition-colors whitespace-nowrap">Контакт</a>
+            <a
+              href="/git"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-950/30 px-2.5 py-1 text-xs font-mono text-red-400 hover:bg-red-900/40 hover:text-red-300 transition"
+              title="Отвори Git & Code Studio (Push / Fetch)"
+            >
+              <FolderGit2 className="h-3.5 w-3.5" />
+              <span>Git Hub</span>
+            </a>
           </nav>
 
           {/* Zone 3: Primary Actions */}
@@ -386,6 +395,10 @@ export default function App() {
               <a href="#about" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-400 transition-colors">За Нас</a>
               <a href="#services" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-400 transition-colors">Услуги</a>
               <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-400 transition-colors">Контакт</a>
+              <a href="/git" onClick={() => setMobileMenuOpen(false)} className="py-1 text-red-400 hover:text-red-300 flex items-center gap-2 font-mono text-sm">
+                <FolderGit2 className="h-4 w-4" />
+                <span>Git Studio (Push & Fetch)</span>
+              </a>
             </div>
             <div className="pt-3 border-t border-[#1e1e28] flex flex-col gap-2.5">
               <button

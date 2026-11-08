@@ -4,9 +4,13 @@ import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { exec } from 'node:child_process';
+import { promisify } from 'node:util';
 import path from 'node:path';
 
 dotenv.config();
+
+const execAsync = promisify(exec);
 
 const app = express();
 const PORT = 3000;
@@ -294,6 +298,331 @@ app.post('/api/chat', async (req, res) => {
       error: 'Се појави проблем при комуникацијата со Gemini асистентот.',
       details: error?.message,
     });
+  }
+});
+
+// ==========================================
+// Git & Development Workspace API
+// ==========================================
+
+function sanitizeOutput(text: string, token?: string): string {
+  if (!text) return '';
+  let cleaned = text;
+  if (token) {
+    cleaned = cleaned.split(token).join('***TOKEN***');
+  }
+  return cleaned.replace(/https:\/\/[^@\s]+@github\.com/gi, 'https://***@github.com');
+}
+
+async function runGit(command: string, token?: string): Promise<{ stdout: string; stderr: string }> {
+  try {
+    const { stdout, stderr } = await execAsync(command, {
+      cwd: process.cwd(),
+      timeout: 45000,
+      env: {
+        ...process.env,
+        GIT_TERMINAL_PROMPT: '0',
+      },
+    });
+    return {
+      stdout: sanitizeOutput(stdout, token),
+      stderr: sanitizeOutput(stderr, token),
+    };
+  } catch (err: any) {
+    const errorMsg = sanitizeOutput(err.message || String(err), token);
+    const stderr = sanitizeOutput(err.stderr || '', token);
+    const stdout = sanitizeOutput(err.stdout || '', token);
+    throw new Error(stderr || errorMsg || stdout);
+  }
+}
+
+app.get('/api/dev/info', async (_req, res) => {
+  try {
+    const [gitVersionRes, nodeVersion, remoteRes] = await Promise.all([
+      runGit('git --version').catch(() => ({ stdout: 'unknown' })),
+      process.version,
+      runGit('git remote get-url origin').catch(() => ({ stdout: '' })),
+    ]);
+
+    res.json({
+      gitVersion: gitVersionRes.stdout.trim(),
+      nodeVersion,
+      platform: process.platform,
+      remoteUrl: remoteRes.stdout.trim() || 'https://github.com/angjeleskijane-spec/Tintology.git',
+      appUrl: process.env.APP_URL || 'http://localhost:3000',
+      environment: process.env.NODE_ENV || 'development',
+      hasServerToken: Boolean(process.env.GITHUB_TOKEN),
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/git/status', async (_req, res) => {
+  try {
+    const [porcelainRes, branchRes, commitRes, remoteRes] = await Promise.all([
+      runGit('git status --porcelain=v1 -b'),
+      runGit('git rev-parse --abbrev-ref HEAD').catch(() => ({ stdout: 'main' })),
+      runGit('git log -1 --pretty=format:"%h%x09%an%x09%ar%x09%s"').catch(() => ({ stdout: '' })),
+      runGit('git remote get-url origin').catch(() => ({ stdout: 'https://github.com/angjeleskijane-spec/Tintology.git' })),
+    ]);
+
+    const rawLines = porcelainRes.stdout.trim().split('\n').filter(Boolean);
+    const header = rawLines[0] || '';
+    const currentBranch = branchRes.stdout.trim() || 'main';
+
+    let ahead = 0;
+    let behind = 0;
+    const aheadMatch = header.match(/ahead (\d+)/);
+    if (aheadMatch) ahead = parseInt(aheadMatch[1], 10);
+    const behindMatch = header.match(/behind (\d+)/);
+    if (behindMatch) behind = parseInt(behindMatch[1], 10);
+
+    const fileLines = rawLines.slice(1);
+    const files = fileLines.map(line => {
+      const code = line.substring(0, 2);
+      const filePath = line.substring(3).trim();
+      const staged = code[0] !== ' ' && code[0] !== '?';
+      return {
+        path: filePath,
+        code,
+        staged,
+        isUntracked: code === '??',
+        isModified: code.includes('M'),
+        isDeleted: code.includes('D'),
+        isAdded: code.includes('A') || code === '??',
+      };
+    });
+
+    let lastCommit = null;
+    if (commitRes.stdout.trim()) {
+      const [hash, author, date, message] = commitRes.stdout.trim().split('\t');
+      lastCommit = { hash, author, date, message };
+    }
+
+    res.json({
+      branch: currentBranch,
+      header,
+      ahead,
+      behind,
+      isClean: files.length === 0,
+      files,
+      lastCommit,
+      remoteUrl: remoteRes.stdout.trim(),
+      hasServerToken: Boolean(process.env.GITHUB_TOKEN),
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/git/fetch', async (req, res) => {
+  const { remote = 'origin', token } = req.body || {};
+  const effectiveToken = (token || process.env.GITHUB_TOKEN || '').trim();
+  try {
+    let cmd = `git fetch ${remote}`;
+    if (effectiveToken) {
+      const remoteUrl = 'https://github.com/angjeleskijane-spec/Tintology.git';
+      const authedUrl = remoteUrl.replace('https://', `https://${effectiveToken}@`);
+      cmd = `git fetch ${authedUrl}`;
+    }
+    const { stdout, stderr } = await runGit(cmd, effectiveToken);
+    res.json({
+      success: true,
+      message: 'Успешно преземени промени од origin (Fetch).',
+      stdout: stdout || 'Origin е ажуриран.',
+      stderr,
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/git/pull', async (req, res) => {
+  const { branch = 'main', token } = req.body || {};
+  const effectiveToken = (token || process.env.GITHUB_TOKEN || '').trim();
+  try {
+    let cmd = `git pull origin ${branch}`;
+    if (effectiveToken) {
+      const remoteUrl = 'https://github.com/angjeleskijane-spec/Tintology.git';
+      const authedUrl = remoteUrl.replace('https://', `https://${effectiveToken}@`);
+      cmd = `git pull ${authedUrl} ${branch}`;
+    }
+    const { stdout, stderr } = await runGit(cmd, effectiveToken);
+    res.json({
+      success: true,
+      message: 'Успешно повлечени промени од GitHub (Pull).',
+      stdout: stdout || 'Кодот е целосно ажуриран.',
+      stderr,
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/git/push', async (req, res) => {
+  const { branch = 'main', token, force = false } = req.body || {};
+  const effectiveToken = (token || process.env.GITHUB_TOKEN || '').trim();
+  try {
+    const forceFlag = force ? ' --force' : '';
+    let cmd = `git push origin ${branch}${forceFlag}`;
+    if (effectiveToken) {
+      const remoteUrl = 'https://github.com/angjeleskijane-spec/Tintology.git';
+      const authedUrl = remoteUrl.replace('https://', `https://${effectiveToken}@`);
+      cmd = `git push ${authedUrl} ${branch}${forceFlag}`;
+    }
+    const { stdout, stderr } = await runGit(cmd, effectiveToken);
+    res.json({
+      success: true,
+      message: `Успешно испратени промени кон GitHub (${branch})!`,
+      stdout: stdout || 'Успешен push на промените.',
+      stderr,
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/git/stage', async (req, res) => {
+  const { files = 'all' } = req.body || {};
+  try {
+    if (files === 'all') {
+      await runGit('git add -A');
+    } else if (Array.isArray(files) && files.length > 0) {
+      const escaped = files.map((f: string) => `"${f.replace(/"/g, '\\"')}"`).join(' ');
+      await runGit(`git add ${escaped}`);
+    }
+    res.json({ success: true, message: 'Датотеките се додадени во staging (git add).' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/git/unstage', async (req, res) => {
+  const { files = 'all' } = req.body || {};
+  try {
+    if (files === 'all') {
+      await runGit('git restore --staged .');
+    } else if (Array.isArray(files) && files.length > 0) {
+      const escaped = files.map((f: string) => `"${f.replace(/"/g, '\\"')}"`).join(' ');
+      await runGit(`git restore --staged ${escaped}`);
+    }
+    res.json({ success: true, message: 'Датотеките се отстранети од staging (git restore --staged).' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/git/commit', async (req, res) => {
+  const { message, stageAll = false, pushAfter = false, token, branch = 'main' } = req.body || {};
+  if (!message || typeof message !== 'string' || !message.trim()) {
+    return res.status(400).json({ error: 'Потребна е порака за commit.' });
+  }
+  try {
+    if (stageAll) {
+      await runGit('git add -A');
+    }
+    const cleanMsg = message.trim().replace(/"/g, '\\"');
+    const commitRes = await runGit(`git commit -m "${cleanMsg}"`);
+
+    let pushRes = null;
+    if (pushAfter) {
+      const effectiveToken = (token || process.env.GITHUB_TOKEN || '').trim();
+      let pushCmd = `git push origin ${branch}`;
+      if (effectiveToken) {
+        const remoteUrl = 'https://github.com/angjeleskijane-spec/Tintology.git';
+        const authedUrl = remoteUrl.replace('https://', `https://${effectiveToken}@`);
+        pushCmd = `git push ${authedUrl} ${branch}`;
+      }
+      pushRes = await runGit(pushCmd, effectiveToken);
+    }
+
+    res.json({
+      success: true,
+      message: pushAfter ? 'Успешен commit и push кон GitHub!' : 'Успешен commit!',
+      commitOutput: commitRes.stdout || commitRes.stderr,
+      pushOutput: pushRes ? (pushRes.stdout || pushRes.stderr) : null,
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.get('/api/git/diff', async (req, res) => {
+  const staged = req.query.staged === 'true';
+  const filePath = typeof req.query.file === 'string' ? req.query.file : '';
+  try {
+    const stagedFlag = staged ? '--cached' : '';
+    const fileArg = filePath ? `-- "${filePath.replace(/"/g, '\\"')}"` : '';
+    const { stdout } = await runGit(`git diff ${stagedFlag} ${fileArg}`);
+    res.json({ diff: stdout });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/git/log', async (_req, res) => {
+  try {
+    const { stdout } = await runGit('git log -n 25 --pretty=format:"%h%x09%an%x09%ar%x09%s%x09%ad"');
+    const commits = stdout
+      .trim()
+      .split('\n')
+      .filter(Boolean)
+      .map(line => {
+        const [hash, author, dateRel, message, dateFull] = line.split('\t');
+        return { hash, author, dateRel, message, dateFull };
+      });
+    res.json({ commits });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/git/branches', async (_req, res) => {
+  try {
+    const { stdout } = await runGit('git branch -a');
+    const branches = stdout
+      .split('\n')
+      .map(b => b.trim())
+      .filter(Boolean);
+    const current = branches.find(b => b.startsWith('*'))?.replace('*', '').trim() || 'main';
+    const cleanBranches = branches.map(b => b.replace(/^\*\s*/, ''));
+    res.json({ current, branches: cleanBranches });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/git/branch/checkout', async (req, res) => {
+  const { branch, createNew } = req.body || {};
+  if (!branch) return res.status(400).json({ error: 'Потребно е име на гранка.' });
+  try {
+    const flag = createNew ? '-b ' : '';
+    const { stdout, stderr } = await runGit(`git checkout ${flag}${branch}`);
+    res.json({ success: true, stdout, stderr, message: `Префрлено на гранка: ${branch}` });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/git/cmd', async (req, res) => {
+  const { command } = req.body || {};
+  if (!command || typeof command !== 'string') {
+    return res.status(400).json({ error: 'Потребна е команда.' });
+  }
+  const trimmed = command.trim();
+  if (!trimmed.startsWith('git ')) {
+    return res.status(400).json({ error: 'Дозволени се само git команди (пр. git status, git remote -v).' });
+  }
+  const forbidden = [';', '&&', '||', '|', '`', '$(', 'rm ', 'sudo', 'chmod', 'chown'];
+  if (forbidden.some(f => trimmed.includes(f))) {
+    return res.status(400).json({ error: 'Недозволени карактери во командата.' });
+  }
+  try {
+    const { stdout, stderr } = await runGit(trimmed);
+    res.json({ success: true, stdout, stderr });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 

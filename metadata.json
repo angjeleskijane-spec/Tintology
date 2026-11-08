@@ -1,0 +1,6 @@
+{
+  "name": "Tintology",
+  "description": "Премиум студио за затемнување стакла, XPEL заштитни фолии, car wrap и 3D визуализација со интегриран развоен и Git центар.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
