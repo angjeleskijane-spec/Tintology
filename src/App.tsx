@@ -438,9 +438,13 @@ export default function App() {
       <section id="about" className="scroll-mt-24 border-t border-[#1c1c28] bg-[#0a1019] py-14">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="mb-3 text-xs font-bold uppercase tracking-[.22em] text-blue-300">TINTOLOGY · ЗА НАС</div>
-            <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{tr('Детална грижа за секое возило.', 'Kujdes i detajuar për çdo automjet.', 'Detailed care for every vehicle.')}</h2>
-            <p className="mt-4 text-base leading-relaxed text-slate-300">Tintology нуди професионално затемнување на автомобилски стакла, репарација и замена на автостакла, како и автомобилски Wrap и заштитни фолии. Работиме со внимание на деталите, квалитетни материјали и прецизна монтажа.</p>
+            <div className="mb-3 text-xs font-bold uppercase tracking-[.22em] text-blue-300">TINTOLOGY · {tr('ЗА НАС', 'RRETH NESH', 'ABOUT US')}</div>
+            <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+              {tr('Прецизност во секој детал. Совршенство во секој финиш.', 'Përpikëri në çdo detaj. Përsosmëri në çdo përfundim.', 'Precision in every detail. Perfection in every finish.')}
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-300">
+              {tr('Веруваме дека квалитетот се гледа во деталите. Нудиме професионално затемнување на стакла, репарација и замена на автостакла, Wrap и заштитни фолии. Секој проект го реализираме со внимание, проверени материјали и прецизна изработка.', 'Besojmë se cilësia shihet në detaje. Ofrojmë errësim profesional të xhamave, riparim dhe zëvendësim të xhamave të automjeteve, Wrap dhe filma mbrojtës. Çdo projekt e realizojmë me kujdes, materiale të dëshmuara dhe punim të përpiktë.', 'We believe quality is in the details. We offer professional window tinting, auto glass repair and replacement, car wraps, and protective films. Every project is carried out with care, proven materials, and precise craftsmanship.')}
+            </p>
           </div>
         </div>
       </section>
