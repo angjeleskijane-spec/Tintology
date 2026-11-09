@@ -19,7 +19,7 @@ const getPage = () => {
   if (route === '/wrap') return <WrapPage />;
   if (route === '/ppf-zastita') return <PPFPage />;
   if (route === '/avtomobilska-zastita') return <AutomotiveProtectionPage />;
-  if (route === '/folija-za-tus-kabini') return <ShowerFilmPage />;
+  if (route === '/folija-za-tus-kabini') return <ArchitecturalFilmsPage />;
   return <App />;
 };
 
